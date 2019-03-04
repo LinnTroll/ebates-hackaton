@@ -820,6 +820,7 @@
                                         </td>
                                         <td>
                                             {{ flight.local_date|time }}
+                                            {% if flight.is_utc %}UTC{% endif %}
                                         </td>
                                         <td>
                                             {{ flight.duration }}

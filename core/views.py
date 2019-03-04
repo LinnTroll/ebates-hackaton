@@ -42,7 +42,11 @@ class MainPage(TemplateView):
                 city = sources[flight['src']].city
                 flight['company'] = companies[flight['company']]
                 flight['city'] = city
-                local_tz = pytz.timezone(city.timezone)
+                try:
+                    local_tz = pytz.timezone(city.timezone)
+                except pytz.exceptions.UnknownTimeZoneError:
+                    local_tz = pytz.utc
+                    flight['is_utc'] = True
                 flight['local_date'] = flight['date'].astimezone(local_tz).replace(tzinfo=None)
             context_data['flights'] = flights
         context_data['form'] = form
