@@ -29,7 +29,8 @@ class AirportsListView(ListView):
         q_param = self.request.GET.get('search')
         if q_param and len(q_param) > 1:
             queryset = queryset.filter(Q(code__in=q_param))
-
+            if not queryset:
+                queryset = queryset.filter(Q(city__contains=q_param))
         return queryset.select_related(
             'code',
             'name',
