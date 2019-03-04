@@ -14,44 +14,50 @@
                 source: function (request, response) {
                     $.getJSON('/api/airports/list/', request, function (data, status, xhr) {
                         response(data.map(function (item) {
-                            return item.fields.name;
+                            return {label: item.pk + ' - ' + item.fields.name, value: item.pk};
                         }));
                     });
                 },
                 minLength: 1,
             });
+
+            var $datepicker = $('.datepicker');
+            $datepicker.datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+
         });
 
     </script>
-
     <link rel="stylesheet" type="text/css"
           href="https://www.ebates.com/dist/static/rev/scss/ebates-rebrand-819da82da2.css"/>
-
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
 </head>
-
-
 <body id="tab6" class=" noSubTab new-ui new-ui  ">
 <div id="container" class=" dwview">
-
     <style>
-				.tcpp-info-close{position: absolute;top: 0;right: 10px;}
-				.pad-20-lr{padding-right:20px;padding-left:20px;}
-				.button.tcpp-button{width:118px;color:#333;}
+        .tcpp-info-close {
+            position: absolute;
+            top: 0;
+            right: 10px;
+        }
 
+        .pad-20-lr {
+            padding-right: 20px;
+            padding-left: 20px;
+        }
 
+        .button.tcpp-button {
+            width: 118px;
+            color: #333;
+        }
     </style>
-
     <div id="oldBrowser"></div>
-
     <script type="text/javascript">
-	var pheader = "pre-header";
+        var pheader = "pre-header";
+
     </script>
-
-
     <div id="header-main" class="container-fluid h-mainheader bg-w prox-r">
         <div class="container-fluid blk-reg h-search  pos-abs border-b">
             <div class="container-fixed">
@@ -76,8 +82,6 @@
                                         border="0"></button>
                             </form>
                         </div>
-
-
                         <ul class="user frt prox-r">
                             <li class="account-menu nopad-r f-right pointer">
                                 <a href="/my-account.htm" rel="" data-navigation-id="22832"
@@ -110,7 +114,8 @@
                                                                 class="f-norm lh-30 bblk" data-event-signature="ec,ea"
                                                                 data-ec="Global Nav"
                                                                 data-ea="Member Cash Back Balance - Click"> Cash Back
-                                        Balance : <span class="pending-cb-amount f-grn prox-b"></span> </a></li>
+                                        Balance : <span class="pending-cb-amount f-grn prox-b"></span> </a>
+                                    </li>
                                     <li><a href="/cash-back-history.htm" data-click-category="Global Nav" rel=""
                                            data-click-action="Click Big Fat Check History" data-navigation-id="22833"
                                            class="f-norm lh-30 bblk" data-event-signature="ec,ea" data-ec="Global Nav"
@@ -119,7 +124,8 @@
                                            class="f-norm lh-30 bblk" data-click-category="Global Nav"
                                            data-click-action="Click Account Settings" data-event-signature="ec,ea"
                                            data-ec="Global Nav" data-ea="Member Account Settings - Click">Account
-                                        Settings</a></li>
+                                        Settings</a>
+                                    </li>
                                     <li class="border-b mar-10-b"><a href="/my-wallet.htm" rel=""
                                                                      data-navigation-id="22833"
                                                                      class="f-norm lh-30 pad-10-b bblk"
@@ -129,23 +135,23 @@
                                                                      data-ea="Member My Wallet - Click">My Wallet</a>
                                     </li>
                                     <li class="connect border-b hide lh-30">
-                                        <span class="fb-btn hide f-white-all mar-5-r flt">
-                                            <a data-click-category="Global Nav" rel=""
-                                               data-click-action="Click Facebook Connect"
-                                               class="button reg social fb hdr fconnect"
-                                               href="javascript:linkWithFacebook('214330088590858', 'https://www.ebates.com/','https://www.ebates.com/fbOAuth2callback.htm','','fconnect');"
-                                               title="Connect with Facebook" rel="nofollow" data-event-signature="ec,ea"
-                                               data-ec="Global Nav" data-ea="Member Facebook Connect - Click"><span
-                                                    class="fa-facebook f-14"></span> Connect</a>
-                                        </span>
+                                    <span class="fb-btn hide f-white-all mar-5-r flt">
+                                    <a data-click-category="Global Nav" rel=""
+                                       data-click-action="Click Facebook Connect"
+                                       class="button reg social fb hdr fconnect"
+                                       href="javascript:linkWithFacebook('214330088590858', 'https://www.ebates.com/','https://www.ebates.com/fbOAuth2callback.htm','','fconnect');"
+                                       title="Connect with Facebook" rel="nofollow" data-event-signature="ec,ea"
+                                       data-ec="Global Nav" data-ea="Member Facebook Connect - Click"><span
+                                            class="fa-facebook f-14"></span> Connect</a>
+                                    </span>
                                         <span class="gp-btn hide f-white-all">
-                                            <a href="#" rel="" data-click-category="Global Nav"
-                                               data-click-action="Click Google Connect"
-                                               class="button reg social goog hdr gconnect-btn" border="0"
-                                               title="Connect with Google+" rel="nofollow" data-event-signature="ec,ea"
-                                               data-ec="Global Nav" data-ea="Member Google Connect - Click"><span
-                                                    class="fa-google f-14"></span> Connect</a>
-                                        </span>
+                                    <a href="#" rel="" data-click-category="Global Nav"
+                                       data-click-action="Click Google Connect"
+                                       class="button reg social goog hdr gconnect-btn" border="0"
+                                       title="Connect with Google+" rel="nofollow" data-event-signature="ec,ea"
+                                       data-ec="Global Nav" data-ea="Member Google Connect - Click"><span
+                                            class="fa-google f-14"></span> Connect</a>
+                                    </span>
                                     </li>
                                     <li><a href="/logout.do" rel="" data-click-category="Global Nav"
                                            data-click-action="Click Sign Out" data-navigation-id="22833"
@@ -158,174 +164,240 @@
                                 </ul>
                             </li>
                         </ul>
-
-
                         <div id="fb-root"></div>
                         <script>
-            var unlock = "true";
-            $(window).load(function(){
-                jQuery.ajaxSetup({ cache: true });
-                jQuery.getScript('//connect.facebook.net/en_US/sdk.js',function (){
-                    function initFB(){
-                        FB.init({
-                            appId  : '214330088590858',
-                            status : true,
-                            cookie : true, // enable cookies to allow the server to access the session
-                            xfbml  : true,  // parse XFBML
-                            oauth  : true,
-                            version: 'v2.12'
-                        });
-                        $(document).trigger('fb-ready');
-                    }
-                    if(typeof FB !== 'undefined'){initFB();} else {setTimeout(initFB,100);}
-                });
-            });
+                            var unlock = "true";
+                            $(window).load(function () {
+                                jQuery.ajaxSetup({cache: true});
+                                jQuery.getScript('//connect.facebook.net/en_US/sdk.js', function () {
+                                    function initFB() {
+                                        FB.init({
+                                            appId: '214330088590858',
+                                            status: true,
+                                            cookie: true, // enable cookies to allow the server to access the session
+                                            xfbml: true,  // parse XFBML
+                                            oauth: true,
+                                            version: 'v2.12'
+                                        });
+                                        $(document).trigger('fb-ready');
+                                    }
 
-            function linkWithFacebook(fbAppId, siteRoot, urlAction, params, fconnect){
-                var redirectParams = {}, oauthParams = {client_id: fbAppId};
-                if(unlock !== "true"){ return; }
-                if(typeof fbPromoValue !== "undefined" && fbPromoValue !== ""){    // these parameters should be better passed as arguments instead of globals
-                    if(typeof fbsplitId !== "undefined" && fbsplitId !== ""){
-                        redirectParams["split_entry_id"] = fbsplitId;
-                    }
-                    redirectParams["ebates.signup.promo"] = fbPromoValue;
-                }
-                typeof params === "object" && jQuery.each(params, function(key, value){redirectParams[key] = value.replace(/\s/g, "_");});
-                redirectParams["_csrf"] = "a357e08b-a23f-4edf-a195-de6d614d8be1";
-                redirectParams["urlIdentifier"] = location.pathname + location.search;
-                if(typeof fconnect != "undefined" && fconnect == 'fconnect'){
-                    redirectParams["action"] = "/fbIntegrationAction.do";
-                } else {
-                    redirectParams["action"] = "/FBUserSignupOrLogin.htm";
-                }
-                oauthParams["state"] = encodeURIComponent(jQuery.param(redirectParams));
-                oauthParams["redirect_uri"] = urlAction;
-                oauthParams["display"] = "popup";
-                oauthParams['redirect_params'] = redirectParams;
-                getConnectWithFacebook("https://www.facebook.com/v2.12/dialog/oauth?" + jQuery.param(oauthParams),oauthParams, fconnect);
-                fbPromoValue = "";
-            }
+                                    if (typeof FB !== 'undefined') {
+                                        initFB();
+                                    } else {
+                                        setTimeout(initFB, 100);
+                                    }
+                                });
+                            });
 
-            function getConnectWithFacebook(fb_auth_url, oauthParams, fconnect) {
-                unlock = "false";
-                function loginWithFbWrapper(){
-                    var fb_conf = {};
-                    fb_conf.csrfToken = "a357e08b-a23f-4edf-a195-de6d614d8be1";
-                                        fb_conf.cb_on_response = function(){unlock = "true";};
-                    if(typeof fconnect != "undefined" && fconnect == 'fconnect'){
-                        fb_conf.usLinkApi = true;
-                    }
-                        FB.login(function(response) {
-    var apiEndpoint,ajaxData;
-    if (!(fb_conf && oauthParams)){ return; }
-    if(typeof rkfb !== 'undefined'){
-    apiEndpoint = fb_conf.usLinkApi ? '/newr/fblink.do' : '/newr/FBUserSignupOrLogin.do?rhome=true';
-    }else{
-    apiEndpoint = fb_conf.usLinkApi ? '/fblink.do' : '/FBUserSignupOrLogin.do';
-    }
-    if(fb_conf.apiSetup){
-        apiEndpoint = fb_conf.apiSetup;
-    }
-    if (typeof fb_conf.cb_on_response === 'function'){
-        fb_conf.cb_on_response();
-    }
-    ajaxData  = {
-        _csrf: fb_conf.csrfToken
-    }
-    if(oauthParams['redirect_params']){
-        for(var key in oauthParams['redirect_params']){ ajaxData[key] = oauthParams['redirect_params'][key]; }
-    }
-    if (response.authResponse) {
-        if (response.status === 'connected') {
-            ajaxData.accessToken = response.authResponse.accessToken;
-            $.ajax({
-                url: apiEndpoint, data:ajaxData,datatType: 'json',
-                success: function(res) {
-                    if(JSON.stringify(res).indexOf('GDPR user') > -1){window.location.assign('/gdpr.htm');}
-                    if (res.status === 'success'){if(typeof rkfb !== 'undefined'){ if(window.location.href.indexOf("qa-www.ebates.com") != -1 || window.location.href.indexOf("qa2-www.ebates.com") != -1){window.location.assign("https://qa2-www.ebates.com?ebtoken="+res.jwttoken);}else{window.location.assign("https://www.ebates.com?ebtoken="+res.jwttoken);}}else{window.location.assign(res.targetUrl || window.location.href);}}else {if(fb_auth_url){window.location.assign(fb_auth_url);}}
-                    },
-                error: function(){if(fb_auth_url){window.location.assign(fb_auth_url);}}
-            });
-            if (typeof fb_conf.cb_on_connected === 'function') {fb_conf.cb_on_connected();}
-        }
-    }
-}, {scope: 'email'});;                }
-                if(typeof FB !== 'undefined'){loginWithFbWrapper();}
-                else {setTimeout(function(){
-                    if(typeof FB !== 'undefined'){loginWithFbWrapper();} else {setTimeout(loginWithFbWrapper,2000)}
-                },1000);}
-            }
+                            function linkWithFacebook(fbAppId, siteRoot, urlAction, params, fconnect) {
+                                var redirectParams = {}, oauthParams = {client_id: fbAppId};
+                                if (unlock !== "true") {
+                                    return;
+                                }
+                                if (typeof fbPromoValue !== "undefined" && fbPromoValue !== "") {    // these parameters should be better passed as arguments instead of globals
+                                    if (typeof fbsplitId !== "undefined" && fbsplitId !== "") {
+                                        redirectParams["split_entry_id"] = fbsplitId;
+                                    }
+                                    redirectParams["ebates.signup.promo"] = fbPromoValue;
+                                }
+                                typeof params === "object" && jQuery.each(params, function (key, value) {
+                                    redirectParams[key] = value.replace(/\s/g, "_");
+                                });
+                                redirectParams["_csrf"] = "a357e08b-a23f-4edf-a195-de6d614d8be1";
+                                redirectParams["urlIdentifier"] = location.pathname + location.search;
+                                if (typeof fconnect != "undefined" && fconnect == 'fconnect') {
+                                    redirectParams["action"] = "/fbIntegrationAction.do";
+                                } else {
+                                    redirectParams["action"] = "/FBUserSignupOrLogin.htm";
+                                }
+                                oauthParams["state"] = encodeURIComponent(jQuery.param(redirectParams));
+                                oauthParams["redirect_uri"] = urlAction;
+                                oauthParams["display"] = "popup";
+                                oauthParams['redirect_params'] = redirectParams;
+                                getConnectWithFacebook("https://www.facebook.com/v2.12/dialog/oauth?" + jQuery.param(oauthParams), oauthParams, fconnect);
+                                fbPromoValue = "";
+                            }
 
-            function getLoginWithFacebook(fb_auth_url, oauthParams) {
-                unlock = "false";
-                function loginWithFbWrapper(){
-                    var fb_conf = {};
-                    fb_conf.csrfToken = "a357e08b-a23f-4edf-a195-de6d614d8be1";
-                                        fb_conf.cb_on_response = function(){unlock = "true";};
-                        FB.login(function(response) {
-    var apiEndpoint,ajaxData;
-    if (!(fb_conf && oauthParams)){ return; }
-    if(typeof rkfb !== 'undefined'){
-    apiEndpoint = fb_conf.usLinkApi ? '/newr/fblink.do' : '/newr/FBUserSignupOrLogin.do?rhome=true';
-    }else{
-    apiEndpoint = fb_conf.usLinkApi ? '/fblink.do' : '/FBUserSignupOrLogin.do';
-    }
-    if(fb_conf.apiSetup){
-        apiEndpoint = fb_conf.apiSetup;
-    }
-    if (typeof fb_conf.cb_on_response === 'function'){
-        fb_conf.cb_on_response();
-    }
-    ajaxData  = {
-        _csrf: fb_conf.csrfToken
-    }
-    if(oauthParams['redirect_params']){
-        for(var key in oauthParams['redirect_params']){ ajaxData[key] = oauthParams['redirect_params'][key]; }
-    }
-    if (response.authResponse) {
-        if (response.status === 'connected') {
-            ajaxData.accessToken = response.authResponse.accessToken;
-            $.ajax({
-                url: apiEndpoint, data:ajaxData,datatType: 'json',
-                success: function(res) {
-                    if(JSON.stringify(res).indexOf('GDPR user') > -1){window.location.assign('/gdpr.htm');}
-                    if (res.status === 'success'){if(typeof rkfb !== 'undefined'){ if(window.location.href.indexOf("qa-www.ebates.com") != -1 || window.location.href.indexOf("qa2-www.ebates.com") != -1){window.location.assign("https://qa2-www.ebates.com?ebtoken="+res.jwttoken);}else{window.location.assign("https://www.ebates.com?ebtoken="+res.jwttoken);}}else{window.location.assign(res.targetUrl || window.location.href);}}else {if(fb_auth_url){window.location.assign(fb_auth_url);}}
-                    },
-                error: function(){if(fb_auth_url){window.location.assign(fb_auth_url);}}
-            });
-            if (typeof fb_conf.cb_on_connected === 'function') {fb_conf.cb_on_connected();}
-        }
-    }
-}, {scope: 'email'});;                }
-                if(typeof FB !== 'undefined'){loginWithFbWrapper();}
-                else {setTimeout(function(){
-                    if(typeof FB !== 'undefined'){loginWithFbWrapper();} else {setTimeout(loginWithFbWrapper,2000)}
-                },1000);}
-            }
+                            function getConnectWithFacebook(fb_auth_url, oauthParams, fconnect) {
+                                unlock = "false";
 
+                                function loginWithFbWrapper() {
+                                    var fb_conf = {};
+                                    fb_conf.csrfToken = "a357e08b-a23f-4edf-a195-de6d614d8be1";
+                                    fb_conf.cb_on_response = function () {
+                                        unlock = "true";
+                                    };
+                                    if (typeof fconnect != "undefined" && fconnect == 'fconnect') {
+                                        fb_conf.usLinkApi = true;
+                                    }
+                                    FB.login(function (response) {
+                                        var apiEndpoint, ajaxData;
+                                        if (!(fb_conf && oauthParams)) {
+                                            return;
+                                        }
+                                        if (typeof rkfb !== 'undefined') {
+                                            apiEndpoint = fb_conf.usLinkApi ? '/newr/fblink.do' : '/newr/FBUserSignupOrLogin.do?rhome=true';
+                                        } else {
+                                            apiEndpoint = fb_conf.usLinkApi ? '/fblink.do' : '/FBUserSignupOrLogin.do';
+                                        }
+                                        if (fb_conf.apiSetup) {
+                                            apiEndpoint = fb_conf.apiSetup;
+                                        }
+                                        if (typeof fb_conf.cb_on_response === 'function') {
+                                            fb_conf.cb_on_response();
+                                        }
+                                        ajaxData = {
+                                            _csrf: fb_conf.csrfToken
+                                        }
+                                        if (oauthParams['redirect_params']) {
+                                            for (var key in oauthParams['redirect_params']) {
+                                                ajaxData[key] = oauthParams['redirect_params'][key];
+                                            }
+                                        }
+                                        if (response.authResponse) {
+                                            if (response.status === 'connected') {
+                                                ajaxData.accessToken = response.authResponse.accessToken;
+                                                $.ajax({
+                                                    url: apiEndpoint, data: ajaxData, datatType: 'json',
+                                                    success: function (res) {
+                                                        if (JSON.stringify(res).indexOf('GDPR user') > -1) {
+                                                            window.location.assign('/gdpr.htm');
+                                                        }
+                                                        if (res.status === 'success') {
+                                                            if (typeof rkfb !== 'undefined') {
+                                                                if (window.location.href.indexOf("qa-www.ebates.com") != -1 || window.location.href.indexOf("qa2-www.ebates.com") != -1) {
+                                                                    window.location.assign("https://qa2-www.ebates.com?ebtoken=" + res.jwttoken);
+                                                                } else {
+                                                                    window.location.assign("https://www.ebates.com?ebtoken=" + res.jwttoken);
+                                                                }
+                                                            } else {
+                                                                window.location.assign(res.targetUrl || window.location.href);
+                                                            }
+                                                        } else {
+                                                            if (fb_auth_url) {
+                                                                window.location.assign(fb_auth_url);
+                                                            }
+                                                        }
+                                                    },
+                                                    error: function () {
+                                                        if (fb_auth_url) {
+                                                            window.location.assign(fb_auth_url);
+                                                        }
+                                                    }
+                                                });
+                                                if (typeof fb_conf.cb_on_connected === 'function') {
+                                                    fb_conf.cb_on_connected();
+                                                }
+                                            }
+                                        }
+                                    }, {scope: 'email'});
+                                    ;
+                                }
 
+                                if (typeof FB !== 'undefined') {
+                                    loginWithFbWrapper();
+                                } else {
+                                    setTimeout(function () {
+                                        if (typeof FB !== 'undefined') {
+                                            loginWithFbWrapper();
+                                        } else {
+                                            setTimeout(loginWithFbWrapper, 2000)
+                                        }
+                                    }, 1000);
+                                }
+                            }
 
+                            function getLoginWithFacebook(fb_auth_url, oauthParams) {
+                                unlock = "false";
 
+                                function loginWithFbWrapper() {
+                                    var fb_conf = {};
+                                    fb_conf.csrfToken = "a357e08b-a23f-4edf-a195-de6d614d8be1";
+                                    fb_conf.cb_on_response = function () {
+                                        unlock = "true";
+                                    };
+                                    FB.login(function (response) {
+                                        var apiEndpoint, ajaxData;
+                                        if (!(fb_conf && oauthParams)) {
+                                            return;
+                                        }
+                                        if (typeof rkfb !== 'undefined') {
+                                            apiEndpoint = fb_conf.usLinkApi ? '/newr/fblink.do' : '/newr/FBUserSignupOrLogin.do?rhome=true';
+                                        } else {
+                                            apiEndpoint = fb_conf.usLinkApi ? '/fblink.do' : '/FBUserSignupOrLogin.do';
+                                        }
+                                        if (fb_conf.apiSetup) {
+                                            apiEndpoint = fb_conf.apiSetup;
+                                        }
+                                        if (typeof fb_conf.cb_on_response === 'function') {
+                                            fb_conf.cb_on_response();
+                                        }
+                                        ajaxData = {
+                                            _csrf: fb_conf.csrfToken
+                                        }
+                                        if (oauthParams['redirect_params']) {
+                                            for (var key in oauthParams['redirect_params']) {
+                                                ajaxData[key] = oauthParams['redirect_params'][key];
+                                            }
+                                        }
+                                        if (response.authResponse) {
+                                            if (response.status === 'connected') {
+                                                ajaxData.accessToken = response.authResponse.accessToken;
+                                                $.ajax({
+                                                    url: apiEndpoint, data: ajaxData, datatType: 'json',
+                                                    success: function (res) {
+                                                        if (JSON.stringify(res).indexOf('GDPR user') > -1) {
+                                                            window.location.assign('/gdpr.htm');
+                                                        }
+                                                        if (res.status === 'success') {
+                                                            if (typeof rkfb !== 'undefined') {
+                                                                if (window.location.href.indexOf("qa-www.ebates.com") != -1 || window.location.href.indexOf("qa2-www.ebates.com") != -1) {
+                                                                    window.location.assign("https://qa2-www.ebates.com?ebtoken=" + res.jwttoken);
+                                                                } else {
+                                                                    window.location.assign("https://www.ebates.com?ebtoken=" + res.jwttoken);
+                                                                }
+                                                            } else {
+                                                                window.location.assign(res.targetUrl || window.location.href);
+                                                            }
+                                                        } else {
+                                                            if (fb_auth_url) {
+                                                                window.location.assign(fb_auth_url);
+                                                            }
+                                                        }
+                                                    },
+                                                    error: function () {
+                                                        if (fb_auth_url) {
+                                                            window.location.assign(fb_auth_url);
+                                                        }
+                                                    }
+                                                });
+                                                if (typeof fb_conf.cb_on_connected === 'function') {
+                                                    fb_conf.cb_on_connected();
+                                                }
+                                            }
+                                        }
+                                    }, {scope: 'email'});
+                                    ;
+                                }
 
-
-
-
-
+                                if (typeof FB !== 'undefined') {
+                                    loginWithFbWrapper();
+                                } else {
+                                    setTimeout(function () {
+                                        if (typeof FB !== 'undefined') {
+                                            loginWithFbWrapper();
+                                        } else {
+                                            setTimeout(loginWithFbWrapper, 2000)
+                                        }
+                                    }, 1000);
+                                }
+                            }
 
 
                         </script>
-
                         <script type="text/javascript">
-    var isUserlogin = false;
-
-
-
-
-
-
-
-
-
+                            var isUserlogin = false;
 
 
                         </script>
@@ -333,8 +405,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="container-fluid h-ribbon border-b absolute">
             <div class="container-fixed">
                 <div class="blk-group">
@@ -354,7 +424,8 @@
                                                                       data-click-action="Click Double Cash Back Stores"
                                                                       data-event-signature="ec,ea" data-ec="Global Nav"
                                                                       data-ea="Nav Double Cash Back Stores - Click">Double
-                                Cash Back Stores</a></li>
+                                Cash Back Stores</a>
+                            </li>
                             <li id="nav-tab2" class="pointer">
                                 <a class="deals-menu-trigger tab prox-b pointer" rel="" href="/coupons"
                                    data-navigation-id="22763" data-click-category="Global Nav"
@@ -392,8 +463,8 @@
         </div>
     </div>
     <script>
-    (function(){
-        var header = $(".h-mainheader").wrap($("<div>").addClass("header-wrapper prox-r f-14 relative")),
+        (function () {
+            var header = $(".h-mainheader").wrap($("<div>").addClass("header-wrapper prox-r f-14 relative")),
                 headHeight = header.height(),
                 triggerPosition = 0,
                 lastScrollPosition = $(window).scrollTop(),
@@ -401,143 +472,118 @@
                 catMenuClasses = document.getElementById("nav-tab1").classList,
                 acctMenuClasses = ebates.user.loggedIn && document.querySelector(".user .account-menu").classList,
                 stopAfter = 15000,
-                posTimer = setInterval(function(){
+                posTimer = setInterval(function () {
                     triggerPosition = $(".header-wrapper").offset().top;
                     triggerPosition < 5 && header.addClass("top-0") || header.removeClass("top-0");
                 }, 200),  // update in case some element is dynamically inserted above header (ABP warning, promo timer...)
-                adjustAnchorScroll = function(){
+                adjustAnchorScroll = function () {
                     var hash = this.hash || location.hash;
-                    hash.length > 1 && setTimeout(function(){window.scrollBy(0, hash === "#top" && -(header.height() + 5));}, 50);
+                    hash.length > 1 && setTimeout(function () {
+                        window.scrollBy(0, hash === "#top" && -(header.height() + 5));
+                    }, 50);
                 },
-                unminimize = function(){header.removeClass("min");},
-                minimize = function(){
+                unminimize = function () {
+                    header.removeClass("min");
+                },
+                minimize = function () {
                     var suggestEl = $(".ac_results");
-                    if(suggestEl.length !== 0 && suggestEl.is(":visible") || catMenuClasses.contains("active") || acctMenuClasses && acctMenuClasses.contains("active")) {return;}
+                    if (suggestEl.length !== 0 && suggestEl.is(":visible") || catMenuClasses.contains("active") || acctMenuClasses && acctMenuClasses.contains("active")) {
+                        return;
+                    }
                     header.addClass("min");
                 };
-        $("#store_name", header).on("mouseenter mouseover focus", unminimize)
-        setTimeout(function(){clearInterval(posTimer);}, stopAfter);
-        header.on("mouseenter mouseover", unminimize);
-        $(window).on("scroll-throttle", function(){
-            var gap = $(window).scrollTop(), isFixed = header.hasClass("fixed"), scrollingUp = gap < lastScrollPosition;
-            gap > triggerPosition ? (!isFixed && header.addClass("fixed")) : isFixed && header.removeClass("fixed");
-            if(isFixed){
-                if(scrollingUp){
-                    gap < headHeight && header.removeClass("min") || minimize();
-                } else {
-                    gap > headHeight && minimize();
+            $("#store_name", header).on("mouseenter mouseover focus", unminimize)
+            setTimeout(function () {
+                clearInterval(posTimer);
+            }, stopAfter);
+            header.on("mouseenter mouseover", unminimize);
+            $(window).on("scroll-throttle", function () {
+                var gap = $(window).scrollTop(), isFixed = header.hasClass("fixed"),
+                    scrollingUp = gap < lastScrollPosition;
+                gap > triggerPosition ? (!isFixed && header.addClass("fixed")) : isFixed && header.removeClass("fixed");
+                if (isFixed) {
+                    if (scrollingUp) {
+                        gap < headHeight && header.removeClass("min") || minimize();
+                    } else {
+                        gap > headHeight && minimize();
+                    }
                 }
-            }
-            header.css({left: -$(window).scrollLeft()});
-            lastScrollPosition = gap;
-        });
-        $("a[href^='#']").on("click", adjustAnchorScroll);
-        adjustAnchorScroll();
+                header.css({left: -$(window).scrollLeft()});
+                lastScrollPosition = gap;
+            });
+            $("a[href^='#']").on("click", adjustAnchorScroll);
+            adjustAnchorScroll();
 
-        $(window).on("load", function() {
-            var subNav = $(this).find('#categ-nav-sub'), subNavContent = $('.subnav-content').html();
-            if (subNav.length > 0) {
-                subNav.remove();
-            }
-            else {
-                $('.category-menu-trigger').after(subNavContent);
-            }
-        });
+            $(window).on("load", function () {
+                var subNav = $(this).find('#categ-nav-sub'), subNavContent = $('.subnav-content').html();
+                if (subNav.length > 0) {
+                    subNav.remove();
+                } else {
+                    $('.category-menu-trigger').after(subNavContent);
+                }
+            });
 
-        $('#main-nav #nav-tab2').on('hover', function() {
-            var dealNav = $(this).find('#hotdeal-nav-sub'), dealNavContent = $('.hotdeals-content').html();
-            if(dealNav.length  >  0) {
-                dealNav.remove();
-            }
-            else {
-                $('.deals-menu-trigger').after(dealNavContent);
-            }
-        });
-    })();
-
-
-
-
-
-
-
-
-
+            $('#main-nav #nav-tab2').on('hover', function () {
+                var dealNav = $(this).find('#hotdeal-nav-sub'), dealNavContent = $('.hotdeals-content').html();
+                if (dealNav.length > 0) {
+                    dealNav.remove();
+                } else {
+                    $('.deals-menu-trigger').after(dealNavContent);
+                }
+            });
+        })();
 
 
     </script>
-
-
     <style>
-.h-mainheader.fixed.min .btn-sign-in a.f-white{color:#23ae4a;}
-.dashboard-welcome #disable{top:15px !important;}
+        .h-mainheader.fixed.min .btn-sign-in a.f-white {
+            color: #23ae4a;
+        }
 
-
-
-
-
-
-
-
-
-
-
+        .dashboard-welcome #disable {
+            top: 15px !important;
+        }
     </style>
     <div class="tablet-content-body page-body">
-
         <div id="confirmAddFavBox">
             <span id="confirmAddFavText"></span>
         </div>
-
-
         <style>
-    .tt-top-banner {
-        height: 400px;
-        position: absolute;
-        background-size: cover;
-        background-position: 50%;
-        z-index: -2;
-    }
+            .tt-top-banner {
+                height: 400px;
+                position: absolute;
+                background-size: cover;
+                background-position: 50%;
+                z-index: -2;
+            }
 
-    .tt-top-banner .mask {
-        width: 100%;
-        height: 400px;
-        background-color: #333;
-        opacity: .4;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-    }
+            .tt-top-banner .mask {
+                width: 100%;
+                height: 400px;
+                background-color: #333;
+                opacity: .4;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
 
-    .tt-premium-banner {
-        height: 146px;
-        width: 1170px;
-    }
+            .tt-premium-banner {
+                height: 146px;
+                width: 1170px;
+            }
 
-    .tt-offer {
-        height: 358px;
-    }
-    .top-banner-subtitle {
-        width: 850px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+            .tt-offer {
+                height: 358px;
+            }
 
-
-
-
-
-
-
-
-
-
-
+            .top-banner-subtitle {
+                width: 850px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         </style>
-
         <div class="container-fluid prox-r blk">
-
             <div class="container-fluid tt-top-banner"
                  style="background-image:url(https://static.ebates.com/img/campaign_entity/22916920/2019_travel_category_evergreen_desktop.jpg);">
                 <div class="mask"></div>
@@ -545,99 +591,68 @@
             <div class="container-fixed cat-page travel-page">
                 <div class="container-fixed store-page">
                     <div class="travel-heading center pad-60-tb">
-
                         <h1 class="stag-med f-48 lh-52 f-white mar-15-b space-half">Travel & Vacations</h1>
                         <h2 class="top-banner-subtitle prox-r f-28 f-white">Earn Cash Back on hotels, flights and
-                            more. </h2>
+                            more.
+                        </h2>
                     </div>
                     <div class="blk blk-reg border mar-20-b">
                         <style>
-    .tt-top-banner {
-        height: 400px;
-        position: absolute;
-        background-size: cover;
-        background-position: 50%;
-        z-index: -2;
-    }
+                            .tt-top-banner {
+                                height: 400px;
+                                position: absolute;
+                                background-size: cover;
+                                background-position: 50%;
+                                z-index: -2;
+                            }
 
-    .tt-top-banner .mask {
-        width: 100%;
-        height: 400px;
-        background-color: #333;
-        opacity: .4;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-    }
+                            .tt-top-banner .mask {
+                                width: 100%;
+                                height: 400px;
+                                background-color: #333;
+                                opacity: .4;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: -1;
+                            }
 
-    .tt-premium-banner {
-        height: 146px;
-        width: 1170px;
-    }
+                            .tt-premium-banner {
+                                height: 146px;
+                                width: 1170px;
+                            }
 
-    .tt-offer {
-        height: 358px;
-    }
-    .top-banner-subtitle {
-        width: 850px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+                            .tt-offer {
+                                height: 358px;
+                            }
 
-
-
-
-
-
-
-
-
-
-
+                            .top-banner-subtitle {
+                                width: 850px;
+                                margin-left: auto;
+                                margin-right: auto;
+                            }
                         </style>
-
                         <script language="JavaScript">
-<!--
-    function redirectToTarget()
-    {
-		window.location="$targetPage";
-    }
-    //-->
+                            <!--
+                            function redirectToTarget() {
+                                window.location = "$targetPage";
+                            }
 
-
-
-
-
-
-
-
-
+                            //-->
 
 
                         </script>
-
                         <style>
-	#flight-form .ac_results{left:3px !important;}
-	#flight-to .ac_results{left:3px !important;}
+                            #flight-form .ac_results {
+                                left: 3px !important;
+                            }
 
-
-
-
-
-
-
-
-
-
-
+                            #flight-to .ac_results {
+                                left: 3px !important;
+                            }
                         </style>
-
-
                         <link href="https://www.ebates.com/dist/static/rev/scss/styles/local/categories/travel_widget-ffef0903a3.css"
                               rel="stylesheet" type="text/css"/>
-
-
                         <ul class="nav-tabs clearfix f-cent">
                             <li class="travel-tab-hotels blk"><a class="travel-tabs nohover blk"
                                                                  data-tab="tab-hotels">HOTELS & RENTALS</a></li>
@@ -648,67 +663,64 @@
                             <li class="travel-tab-vacations blk"><a class="travel-tabs nohover blk"
                                                                     data-tab="tab-vacations">PACKAGES</a></li>
                         </ul>
-
-
-                        <div id="tab-flights" class="travel_tab tabs-cont active pad-30">
+                        <form id="tab-flights" class="travel_tab tabs-cont active pad-30">
                             <div class="flights-container">
                                 <h3 class="mar-20-b lh-24 f-20 prox-b">Search for Flights</h3>
                                 <div class="errorMsg f-red pad-15-b f-left rel clr f-14 hide blk"></div>
-
-                                <form method="GET" action="/travel_widget/search/flights.htm" name="flight"
-                                      target="_blank" id="flight-form" class="flight-form ebform f-16 lh-16">
-                                    <input type="hidden" name="tab" value="0"/>
-                                    <input type="hidden" name="sourceName" value="Web-Desktop"/>
-                                    <input type="hidden" name="departingTime" value="Anytime"/>
-                                    <input type="hidden" name="returningTime" value="Anytime"/>
-
-                                    <!-- round/one way -->
-                                    <div class="mar-20-b blk">
-                                        <div class="flt">
-                                            <div class="rTrip_btn checked flt">
-                                                <div class="dot"></div>
-                                            </div>
-                                            <label for="roundTripTrue">Round Trip</label>
-                                            <input type="radio" name="roundTrip" id="roundTripTrue" value="true"
-                                                    class="hide"/>
+                                <!-- round/one way -->
+                                <div class="mar-20-b blk">
+                                    <div class="flt">
+                                        <div class="rTrip_btn checked flt">
+                                            <div class="dot"></div>
                                         </div>
-                                        <div class="flt mar-20-l">
-                                            <div class="oneWay_btn flt">
-                                                <div class="dot"></div>
-                                            </div>
-                                            <input type="radio" name="roundTrip" id="roundTripFalse" value="false"
-                                                   class="hide"/>
-                                            <label for="roundTripFalse">One Way</label>
+                                        <label for="roundTripTrue">Round Trip</label>
+                                        <input type="radio" name="roundTrip" id="roundTripTrue" value="true"
+                                               class="hide"/>
+                                    </div>
+                                    <div class="flt mar-20-l">
+                                        <div class="oneWay_btn flt">
+                                            <div class="dot"></div>
                                         </div>
+                                        <input type="radio" name="roundTrip" id="roundTripFalse" value="false"
+                                               class="hide"/>
+                                        <label for="roundTripFalse">One Way</label>
                                     </div>
-                                    <!-- Merchant, source/dest -->
-
-                                    <!-- from  -->
-                                    <div style="width: 554px;" class="col-third pad-5-l flt clearfix ht-46 blk pos-rel pad-5-r">
-                                        <input name="from" class="border ht-46 round3 blk pad-21-l pad-58-r search-suggest-off search"
-                                               type="search"
-                                               placeholder="From City or Airport Code" data-role="From Location">
-                                    </div>
-                                    <!-- to -->
-                                    <div style="width: 550px;" class="col-third pad-5-l flt clearfix ht-46 blk pos-rel">
-                                        <input name="to" class="border ht-46 round3 blk pad-21-l pad-58-r search" type="search"
-                                               placeholder="To City or Airport Code" data-role="Destination"/>
-                                    </div>
-                                </form>
+                                </div>
+                                <!-- Merchant, source/dest -->
+                                <!-- from  -->
+                                <div style="width: 554px;"
+                                     class="col-third pad-5-l flt clearfix ht-46 blk pos-rel pad-5-r">
+                                    <input name="src"
+                                           class="border ht-46 round3 blk pad-21-l pad-58-r search-suggest-off search"
+                                           type="search"
+                                           placeholder="From City or Airport Code"
+                                           data-role="From Location"
+                                           value="{{ form.src.value | default:'' }}"/>
+                                </div>
+                                <!-- to -->
+                                <div style="width: 550px;" class="col-third pad-5-l flt clearfix ht-46 blk pos-rel">
+                                    <input name="dst" class="border ht-46 round3 blk pad-21-l pad-58-r search"
+                                           type="search"
+                                           placeholder="To City or Airport Code"
+                                           data-role="Destination"
+                                           value="{{ form.dst.value | default:'' }}"/>
+                                </div>
                             </div>
-
                             <div>
                                 <div class="col-third blk pad-5-r pos-rel mar-10-t dep_container">
-                                    <input style="font-size: 17;" id="flight_in" name="departingDate" type="text"
-                                           class="pair-calendar pad-21-l pad-58-r ht-46 blk border round3"
-                                           placeholder="Departing Date" data-role="Departing Date"/>
+                                    <input style="font-size: 17;" id="flight_in" name="date_from" type="text"
+                                           class="pair-calendar pad-21-l pad-58-r ht-46 blk border round3 datepicker"
+                                           placeholder="Departing Date"
+                                           data-role="Departing Date"
+                                           value="{{ form.date_from.value | default:'' }}"/>
                                 </div>
                                 <div class="col-third blk pad-5-l pos-rel pad-5-r mar-10-t ret_container">
-                                    <input style="font-size: 17;" id="flight_out" name="returningDate" type="text"
-                                           class="pair-calendar pad-21-l pad-58-r ht-46 blk border round3"
-                                           placeholder="Returning Date" data-role="Returning Date"/>
+                                    <input style="font-size: 17;" id="flight_out" name="date_to" type="text"
+                                           class="pair-calendar pad-21-l pad-58-r ht-46 blk border round3 datepicker"
+                                           placeholder="Returning Date"
+                                           data-role="Returning Date"
+                                           value="{{ form.date_to.value | default:'' }}"/>
                                 </div>
-
                                 <div class="col-third blk pos-rel flight_travller mar-10-t pad-5-l">
                                     <select class="blk  flt ht-46 cursor custom-selection border round3 f-16 lh-16"
                                             name="travelers">
@@ -728,149 +740,104 @@
                                 </div>
                             </div>
                             <div class="background-pop"></div>
-                        </div>
+                        </form>
                     </div>
-
                     <div>
-
                         <style>
+                            .param-inline dt {
+                                display: inline-block;
+                            }
 
-.param-inline dt {
-    display: inline-block;
-}
-.param dt {
-    margin: 0;
-    margin-right: 7px;
-    font-weight: 600;
-}
-.param-inline dd {
-    vertical-align: baseline;
-    display: inline-block;
-}
+                            .param dt {
+                                margin: 0;
+                                margin-right: 7px;
+                                font-weight: 600;
+                            }
 
-.param dd {
-    margin: 0;
-    vertical-align: baseline;
-}
+                            .param-inline dd {
+                                vertical-align: baseline;
+                                display: inline-block;
+                            }
 
-.shopping-cart-wrap .price {
-    color: #007bff;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 5px;
-    display: block;
-}
-var {
-    font-style: normal;
-}
+                            .param dd {
+                                margin: 0;
+                                vertical-align: baseline;
+                            }
 
-.media img {
-    margin-right: 1rem;
-}
-                    </style>
+                            .shopping-cart-wrap .price {
+                                color: #007bff;
+                                font-size: 18px;
+                                font-weight: bold;
+                                margin-right: 5px;
+                                display: block;
+                            }
+
+                            var {
+                                font-style: normal;
+                            }
+
+                            .media img {
+                                margin-right: 1rem;
+                            }
+                        </style>
                         <div class="card">
                             <table class="table table-hover shopping-cart-wrap">
                                 <thead class="text-muted">
                                 <tr>
                                     <th>Air Company</th>
-                                    <th>Departing Time/Date</th>
-                                    <th>Arriving Time/Date</th>
+                                    <th>Number</th>
+                                    <th>Departing Time</th>
+                                    <th>Duration</th>
                                     <th>Flight Price</th>
                                     <th>Cash Back</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap"><img
-                                                    src="https://images.kiwi.com/airlines/32x32/PS.png"></div>
-                                            <figcaption class="media-body">
-                                                <h6 class="title text-truncate">Product name goes here </h6>
+                                {% for flight in flights %}
+                                    <tr>
+                                        <td>
+                                            <figure class="media">
+                                                <div class="img-wrap">
+                                                    {% if flight.company.image %}
+                                                    <img
+                                                            src="{{ flight.company.image.url }}"
+                                                            height="32">
+                                                    {% else %}
+                                                    <img
+                                                            src="#"
+                                                            height="32">
 
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td>
-                                        6:15 AM
-                                    </td>
-                                    <td>
-
-                                    </td>
-
-                                    <td>
-                                        <div class="price-wrap">
-                                            <var class="price">USD 145</var>
-                                        </div> <!-- price-wrap .// -->
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-outline-danger">Buy ticket</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap"><img
-                                                    src="https://images.kiwi.com/airlines/32x32/LO.png"></div>
-                                            <figcaption class="media-body">
-                                                <h6 class="title text-truncate">Product name goes here </h6>
-
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-
-                                    <td>
-                                        <div class="price-wrap">
-                                            <var class="price">USD 35</var>
-                                        </div> <!-- price-wrap .// -->
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-outline-danger btn-round">Buy ticket</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <figure class="media">
-                                            <div class="img-wrap"><img
-                                                    src="https://images.kiwi.com/airlines/32x32/PS.png"></div>
-                                            <figcaption class="media-body">
-                                                <h6 class="title text-truncate">Product name goes here </h6>
-
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-
-                                    <td>
-                                        <div class="price-wrap">
-                                            <var class="price">USD 45</var>
-                                        </div> <!-- price-wrap .// -->
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-outline-danger btn-round">Buy ticket</a>
-                                    </td>
-                                </tr>
+                                                    {% endif %}
+                                                </div>
+                                                <figcaption class="media-body">
+                                                    <h6 class="title text-truncate">{{ flight.company.name }}</h6>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            {{ flight.company.iata }} {{ flight.number }}
+                                        </td>
+                                        <td>
+                                            {{ flight.local_date|time }}
+                                        </td>
+                                        <td>
+                                            {{ flight.duration }}
+                                        </td>
+                                        <td>
+                                            <div class="price-wrap">
+                                                <var class="price">USD {{ flight.price }}</var>
+                                            </div>
+                                            <!-- price-wrap .// -->
+                                        </td>
+                                        <td>
+                                            {{ flight.company.cashback }}%
+                                        </td>
+                                        <td>
+                                            <a href="" class="btn btn-outline-danger">Buy ticket</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -881,6 +848,4 @@ var {
     </div>
 </div>
 </body>
-
 </html>
-

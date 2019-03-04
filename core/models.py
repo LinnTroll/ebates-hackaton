@@ -39,6 +39,9 @@ class FlightCompany(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def cashback(self):
+        return sum(ord(s) for s in self.iata) % 5 + 1
 
 # class Route(models.Model):
 #     src = models.ForeignKey('core.Airports', related_name='route_src', on_delete=models.CASCADE)
