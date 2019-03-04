@@ -11,13 +11,19 @@ class AirportsAdmin(admin.ModelAdmin):
         return item.city.name
 
     list_display = ('code', 'name', 'get_city', 'get_country')
+    search_fields = ('name', 'code')
 
 
 @admin.register(Cities)
 class CitiesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country', 'timezone')
+    def get_country(self, item):
+        return item.country.name
+
+    list_display = ('name', 'get_country', 'timezone')
+    search_fields = ('name',)
 
 
 @admin.register(Countries)
 class CountriesAdmin(admin.ModelAdmin):
     list_display = ('name', )
+    search_fields = ('name',)

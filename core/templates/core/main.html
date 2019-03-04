@@ -1,1 +1,30 @@
-Main page here
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ebates</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            var $search = $('#search');
+            $search.autocomplete({
+                source: function (request, response) {
+                    $.getJSON('/api/airports/list/', request, function (data, status, xhr) {
+                        response(data.map(function (item) {
+                            return item.fields.name;
+                        }));
+                    });
+                },
+                minLength: 1,
+            });
+        });
+    </script>
+</head>
+<body>
+<input type="search" id="search">
+</body>
+</html>
+
