@@ -1,19 +1,19 @@
 from django.db import models
 
 
-class Country(models.Model):
+class Countries(models.Model):
     name = models.CharField(max_length=100)
 
 
-class City(models.Model):
+class Cities(models.Model):
     name = models.CharField(max_length=100)
     country = models.ForeignKey('core.Country', on_delete=models.CASCADE)
-    timezone = models.TimeField()
+    timezone = models.CharField()
 
 
-class Airport(models.Model):
+class Airports(models.Model):
     name = models.CharField(max_length=100)
     city = models.ForeignKey('core.City', on_delete=models.CASCADE)
     country = models.ForeignKey('core.Country', on_delete=models.CASCADE)
     code = models.CharField(max_length=3)
-    timezone = models.TimeField()
+    timezone = models.CharField()
