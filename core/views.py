@@ -26,12 +26,10 @@ class AirportsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        q_param = self.request.GET.get('q')
-        if q_param:
-            queryset = queryset.filter(slug__contains=slugify(q_param))
-        filters = []
-        if filters:
-            queryset = queryset.filter(store_type__in=filters)
+        q_param = self.request.GET.get('search')
+        if q_param and len(q_param) > 1:
+            queryset = queryset.filter(Q(code__in=q_param))
+
         return queryset.select_related(
             'code',
             'name',

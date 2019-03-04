@@ -1,1 +1,38 @@
-Main page here
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-4.3.0-dist/css/bootstrap.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" media="all"/>
+    <link rel="icon" type="image/png" href="{% static 'favicons/favicon-32x32.png' %}" sizes="32x32">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('.filter-input').on('change', function () {
+                var $this = $(this);
+                var $form = $this.parents('form');
+                $form.submit();
+            });
+        });
+    </script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="body-{{ request.resolver_match.url_name }}">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="{% block container_class_nav %}container{% endblock %}">
+        <div class="collapse navbar-collapse">
+            <form class="form-inline my-md-0 mr-2" method="get" action="{% url 'core:airport_list' %}">
+                <input class="form-control form-control-sm" type="search" name="search" placeholder="Search" value="{{request.GET.q|default:''}}">
+            </form>
+        </div>
+    </div>
+</nav>
+<div style="height: 20px;"></div>
+<div class="{% block container_class %}container{% endblock %}">
+    {% block content %}{% endblock %}
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
