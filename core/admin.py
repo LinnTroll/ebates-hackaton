@@ -1,6 +1,14 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from core.models import Airports, Cities, Countries, FlightCompany
+from core.models import (
+    Airports,
+    Cities,
+    Countries,
+    FlightCompany,
+    Product,
+    Recommend,
+    RecommendCountry,
+)
 
 
 @admin.register(Airports)
@@ -38,9 +46,25 @@ class FlightCompanyAdmin(admin.ModelAdmin):
 
         return None
 
-
     list_display = ('icao', 'img', 'iata', 'name', 'country')
     search_fields = ('icao', 'iata', 'name',)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('store', 'name')
+    search_fields = ('store', 'name')
+#
+#
+class RecommendCountryInline(admin.TabularInline):
+    model = RecommendCountry
+    extra = 0
+
+@admin.register(Recommend)
+class RecommendAdmin(admin.ModelAdmin):
+    list_display = ('product', )
+    inlines = (RecommendCountryInline,)
+
 
 # @admin.register(Route)
 # class RouteAdmin(admin.ModelAdmin):
