@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 import pytz
 from django.core import serializers
-from django.db.models import Q
+from django.db.models import Q, Min
 from django.http import HttpResponse
 from django.views.generic import (
     ListView,
@@ -14,8 +14,10 @@ from django.views.generic import TemplateView
 from api.skypicker_api import get_flights
 from core.forms import FlightSearchForm
 from core.models import (
+    Store,
     Airports,
     FlightCompany,
+    StoreDelivery,
 )
 
 
@@ -108,15 +110,59 @@ class BuyPage(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_suggest_deliveries(self):
-        print()
-        print()
-        print()
+        src_airport = Airports.objects.get(code=self.fwd_flight['src'])
+        dst_airport = Airports.objects.get(code=self.fwd_flight['dst'])
+        src_country = src_airport.city.country
+        dst_country = dst_airport.city.country
+        if src_country == dst_country:
+            return
+
+        src_deliveries = StoreDelivery.objects \
+            .filter(dst=src_country) \
+            .exclude(src=src_country) \
+            .values('store_id') \
+            .annotate(Min('price'))
+
+        src_deliveries_map = {d['store_id']: d for d in src_deliveries}
+
+        dst_deliveries = StoreDelivery.objects \
+            .filter(dst=dst_country) \
+            .exclude(src=dst_country) \
+            .values('store_id') \
+            .annotate(Min('price'))
+
+        suggestions = []
+        stores_ids = set()
+        for dst_delivery in dst_deliveries:
+            src_delivery = src_deliveries_map.get(dst_delivery['store_id'])
+            if not src_delivery:
+                continue
+
+            src_price = src_delivery['price__min']
+            dst_price = dst_delivery['price__min']
+            if src_price <= dst_price:
+                continue
+
+            store_id = dst_delivery['store_id']
+            stores_ids.add(store_id)
+            suggestions.append({
+                'store_id': store_id,
+                'src_price': f'{src_price:.2f}',
+                'dst_price': f'{dst_price:.2f}',
+                'dst_country': dst_country,
+            })
+
+        stores_map = {s.pk: s for s in Store.objects.filter(pk__in=stores_ids)}
+        for suggest in suggestions:
+            suggest['store'] = stores_map[suggest['store_id']]
+
+        return suggestions
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['fwd_flight'] = self.fwd_flight
         context_data['bck_flight'] = self.bck_flight
-        self.get_suggest_deliveries()
+        context_data['suggest_deliveries'] = self.get_suggest_deliveries()
         return context_data
 
 

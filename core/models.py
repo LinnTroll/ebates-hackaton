@@ -63,7 +63,7 @@ class StoreDelivery(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.store} ({self.src} -> {self.dst})'
+        return f'{self.store} ({self.src} -> {self.dst}) {self.price}'
 
     class Meta:
         unique_together = (('store', 'src', 'dst'),)

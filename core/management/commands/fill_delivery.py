@@ -7,12 +7,19 @@ from core.models import Countries, Store, StoreDelivery
 
 
 class Command(BaseCommand):
-
     def get_random_price(self, src, dst):
+        if random.randint(0, 10) != 0:
+            return None
+
         if src == dst:
             base = random.randint(2, 10)
         else:
-            base = random.randint(8, 80)
+            if random.randint(0, 10) == 0:
+                base = random.randint(8, 14)
+            elif random.randint(0, 5) == 0:
+                base = random.randint(14, 25)
+            else:
+                base = random.randint(25, 100)
         cents = 0
         if random.randint(0, 10) == 0:
             cents = random.randint(1, 99)
@@ -34,6 +41,9 @@ class Command(BaseCommand):
             combinations = product(countries, countries)
             for src, dst in combinations:
                 price = self.get_random_price(src, dst)
+                if price is None:
+                    continue
+
                 deliveries.append(StoreDelivery(
                     store=store,
                     src=src,

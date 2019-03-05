@@ -14,4 +14,30 @@
     <hr>
 
     {{ bck_flight }}
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <hr>
+    {% for delivery in suggest_deliveries %}
+        Deliver for {{ delivery.store }} <s>${{ delivery.src_price }}</s> ${{ delivery.dst_price }} in {{ delivery.dst_country.name }}
+        <hr>
+    {% endfor %}
 {% endblock %}
