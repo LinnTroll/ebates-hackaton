@@ -15,6 +15,7 @@ from core.forms import FlightSearchForm
 from core.models import (
     Airports,
     FlightCompany,
+    Recommend,
 )
 
 
@@ -108,3 +109,11 @@ class AirportsListView(ListView):
     def render_to_response(self, context, **response_kwargs):
         resp = HttpResponse(serializers.serialize('json', self.object_list), content_type='application/json')
         return resp
+
+class RecommendProductsListView(ListView):
+    model = Recommend
+
+    def get_queryset(self):
+        dst_country = self.request.GET.get('country')
+        queryset = super().get_queryset()
+        queryset = queryset.filter(Q())
