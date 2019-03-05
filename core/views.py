@@ -107,10 +107,16 @@ class BuyPage(TemplateView):
             self.bck_flight = json.loads(raw_bck_flight)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_suggest_deliveries(self):
+        print()
+        print()
+        print()
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['fwd_flight'] = self.fwd_flight
         context_data['bck_flight'] = self.bck_flight
+        self.get_suggest_deliveries()
         return context_data
 
 

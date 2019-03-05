@@ -10,6 +10,7 @@ from core.models import (
     Product,
     Recommend,
     RecommendCountry,
+    StoreDelivery,
 )
 
 
@@ -36,7 +37,7 @@ class CitiesAdmin(admin.ModelAdmin):
 
 @admin.register(Countries)
 class CountriesAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'alpha2')
     search_fields = ('name',)
 
 
@@ -73,3 +74,9 @@ class RecommendCountryInline(admin.TabularInline):
 class RecommendAdmin(admin.ModelAdmin):
     list_display = ('product',)
     inlines = (RecommendCountryInline,)
+
+
+@admin.register(StoreDelivery)
+class StoreDeliveryAdmin(admin.ModelAdmin):
+    list_display = ('store', 'src', 'dst', 'price')
+    list_filter = ('src', 'dst')

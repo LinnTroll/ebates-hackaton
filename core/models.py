@@ -3,8 +3,12 @@ from django.db import models
 
 class Countries(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    alpha2 = models.CharField(max_length=2, blank=True, null=True)
 
     def __str__(self):
+        if self.alpha2:
+            return f'{self.name} ({self.alpha2})'
+
         return self.name
 
 
@@ -50,6 +54,19 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class StoreDelivery(models.Model):
+    store = models.ForeignKey('core.Store', on_delete=models.CASCADE)
+    src = models.ForeignKey('core.Countries', on_delete=models.CASCADE, related_name='storedelivery_src')
+    dst = models.ForeignKey('core.Countries', on_delete=models.CASCADE, related_name='storedelivery_dst')
+    price = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.store} ({self.src} -> {self.dst})'
+
+    class Meta:
+        unique_together = (('store', 'src', 'dst'),)
 
 
 class Product(models.Model):
