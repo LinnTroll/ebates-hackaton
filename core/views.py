@@ -96,8 +96,8 @@ class MainPage(TemplateView):
 
 class BuyPage(TemplateView):
     template_name = 'core/buy.html'
-    fwd_flight = None
-    bck_flight = None
+    fwd_flight = {}
+    bck_flight = {}
 
     def dispatch(self, request, *args, **kwargs):
         raw_fwd_flight = request.GET.get('fwd_flight')
@@ -108,10 +108,17 @@ class BuyPage(TemplateView):
             self.bck_flight = json.loads(raw_bck_flight)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_company(self, flight):
+        company = flight.get('company')
+        if company:
+            return FlightCompany.objects.get(iata=company)
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['fwd_flight'] = self.fwd_flight
+        context_data['fwd_flight']['company'] = self.get_company(self.fwd_flight)
         context_data['bck_flight'] = self.bck_flight
+        context_data['bck_flight']['company'] = self.get_company(self.bck_flight)
         return context_data
 
 
