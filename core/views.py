@@ -17,6 +17,7 @@ from core.models import (
     Airports,
     FlightCompany,
     Recommend,
+    Cities,
 )
 
 
@@ -108,6 +109,17 @@ class BuyPage(TemplateView):
             self.bck_flight = json.loads(raw_bck_flight)
         return super().dispatch(request, *args, **kwargs)
 
+    def convert_time(self, flight):
+        city = Airports.objects.get(code=flight['src'])
+        local_tz = pytz.timezone(city.city.timezone)
+        try:
+            local_tz = pytz.timezone(city.city.timezone)
+        except pytz.exceptions.UnknownTimeZoneError:
+            local_tz = pytz.utc
+            flight['is_utc'] = True
+        time_obj = datetime.datetime.strptime(flight['date'], '%Y-%m-%d %H:%M:%S')
+        return time_obj.astimezone(local_tz).replace(tzinfo=None)
+
     def get_company(self, flight):
         company = flight.get('company')
         if company:
@@ -117,8 +129,11 @@ class BuyPage(TemplateView):
         context_data = super().get_context_data(**kwargs)
         context_data['fwd_flight'] = self.fwd_flight
         context_data['fwd_flight']['company'] = self.get_company(self.fwd_flight)
+        context_data['fwd_flight']['date'] = self.convert_time(self.fwd_flight)
         context_data['bck_flight'] = self.bck_flight
-        context_data['bck_flight']['company'] = self.get_company(self.bck_flight)
+        if self.bck_flight:
+            context_data['bck_flight']['company'] = self.get_company(self.bck_flight)
+            context_data['bck_flight']['date'] = self.convert_time(self.bck_flight)
         return context_data
 
 
@@ -145,10 +160,13 @@ class AirportsListView(ListView):
         resp = HttpResponse(serializers.serialize('json', self.object_list), content_type='application/json')
         return resp
 
+
 class RecommendProductsListView(ListView):
     model = Recommend
 
     def get_queryset(self):
-        dst_country = self.request.GET.get('country')
+        dst_airport = self.request.GET.get('dst')
+        dst_country = dst_airport.city.country
         queryset = super().get_queryset()
-        queryset = queryset.filter(Q())
+        queryset = queryset.filter(Q(country=dst_country))
+        return queryset
