@@ -6,6 +6,11 @@ metadata:
   labels:
     app: hackaton
 spec:
+  selector:
+    matchLabels:
+      app: hackaton
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
