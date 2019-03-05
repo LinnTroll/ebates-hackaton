@@ -1,3 +1,4 @@
 Django>=2.1,<2.2
 Pillow>=5.4,<5.5
 mysqlclient
+django-storages[google]

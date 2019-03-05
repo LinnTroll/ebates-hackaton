@@ -24,7 +24,15 @@ class Command(BaseCommand):
         airports = []
 
         for n, row in enumerate(csvfile):
+            city_name = row[2].strip()
             country_name = row[3].strip()
+            airport_code = row[4].strip()
+
+            if not airport_code or airport_code == '\\N':
+                continue
+
+            if not city_name or city_name == '\\N':
+                continue
 
             if country_name not in countries:
                 countries[country_name] = Countries(name=country_name)
@@ -36,6 +44,10 @@ class Command(BaseCommand):
             city_name = row[2].strip()
             country_name = row[3].strip()
             city_tz = row[11].strip()
+            airport_code = row[4].strip()
+
+            if not airport_code or airport_code == '\\N':
+                continue
 
             if not city_name or city_name == '\\N':
                 continue
