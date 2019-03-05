@@ -1,0 +1,32 @@
+.flights-list .store-name {
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.flights-list .store-name > img {
+    float: left;
+}
+
+
+.flights-list .store-name .flight-name-text {
+    display: block;
+    margin-left: 42px;
+}
+
+.flights-list .store-name .flight-number {
+    color: #888;
+    margin-top: 4px;
+    white-space: nowrap;
+    display: block;
+}
+
+
+.cat-page .main .flights-list .store-sort li.store .store-rebate {
+    width: 50px;
+}
+
+.cat-page .main .flights-list .store-sort li.store .flight-time {
+    width: 165px;
+    margin-top: 10px;
+    font-size: 14px;
+}

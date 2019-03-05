@@ -1,4 +1,5 @@
 import datetime
+import json
 
 import pytz
 from django.core import serializers
@@ -18,17 +19,25 @@ from core.models import (
 
 
 class MainPage(TemplateView):
-    template_name = 'core/main.html'
+    def dispatch(self, request, *args, **kwargs):
+        self.flight_form = FlightSearchForm(request.GET or None)
+        return super().dispatch(request, *args, **kwargs)
 
-    # def get_flights(self):
+    def get_template_names(self):
+        if self.flight_form.is_valid():
+            return 'core/flights.html'
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        form = FlightSearchForm(self.request.GET or None)
-        if form.is_valid():
-            src = form['src'].value()
-            dst = form['dst'].value()
-            date_from = datetime.datetime.strptime(form['date_from'].value(), '%d/%m/%Y').date()
+        return 'core/main.html'
+
+    def json_flights_defaults(self, item):
+        if isinstance(item, datetime.datetime):
+            return str(item)
+
+    def get_flights(self):
+        if self.flight_form.is_valid():
+            src = self.flight_form['src'].value()
+            dst = self.flight_form['dst'].value()
+            date_from = datetime.datetime.strptime(self.flight_form['date_from'].value(), '%d/%m/%Y').date()
             # date_to = datetime.datetime.strptime(form['date_to'].value(), '%d/%m/%Y').date()
             flights = list(get_flights(src, dst, date_from, date_from))
             companies_codes = set()
@@ -39,18 +48,42 @@ class MainPage(TemplateView):
             sources = {c.code: c for c in Airports.objects.filter(code__in=sources_codes)}
             companies = {c.iata: c for c in FlightCompany.objects.filter(iata__in=companies_codes)}
             for flight in flights:
+                flight['json'] = json.dumps(flight, default=self.json_flights_defaults)
                 city = sources[flight['src']].city
                 flight['company'] = companies[flight['company']]
                 flight['city'] = city
+                flight['duration'] = str(flight['duration'])[:-3]
                 try:
                     local_tz = pytz.timezone(city.timezone)
                 except pytz.exceptions.UnknownTimeZoneError:
                     local_tz = pytz.utc
                     flight['is_utc'] = True
                 flight['local_date'] = flight['date'].astimezone(local_tz).replace(tzinfo=None)
-            context_data['flights'] = flights
-        context_data['form'] = form
+            return flights
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['flights'] = self.get_flights()
+        context_data['form'] = self.flight_form
         return context_data
+
+
+
+class BuyPage(TemplateView):
+    template_name = 'core/buy.html'
+    flight = None
+
+    def dispatch(self, request, *args, **kwargs):
+        raw_json = request.GET.get('json')
+        if raw_json:
+            self.flight = json.loads(raw_json)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['flight'] = self.flight
+        return context_data
+
 
 
 class AirportsListView(ListView):

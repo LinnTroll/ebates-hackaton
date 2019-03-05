@@ -1,0 +1,221 @@
+{% extends 'core/base.html' %} {% block content %}
+<div class="blk main mar-10-b">
+
+    <div class="blk flights-list">
+        <div class="pad-30 pad-20-tb blk-reg border">
+            <span class="f-b f-20 lh-24">Flights:</span>
+        </div>
+
+        <div class="loader pos-abs hide" style="margin-left:381px;"></div>
+        <div class="blk-reg f-16" id="store-list-container">
+            <ul id="store-sort" class="store-sort">
+                {% for flight in flights %}
+                <li class="store blk border-b pad-20 pad-30-lr alpha_a" data-store-id="9814">
+                    <div class="m-store-row-s alpha_a one-line">
+                            <span class="store-name blk f-norm f-16 lh-20">
+                                {% if flight.company.image %}
+                                    <img src="{{ flight.company.image.url }}"
+                                         height="32" width="32">
+                                {% else %}
+                                    <img src="/static/img/empty-icon.png"
+                                         height="32" width="32">
+                                {% endif %}
+                                <span class="flight-name-text">
+                                    {{ flight.company.name }}
+                                    <span class="flight-number">
+                                        {{ flight.company.iata }} {{ flight.number }}
+                                    </span>
+                                </span>
+                            </span>
+                            <span class="flight-time blk f-16 lh-20">
+                                {{ flight.local_date|time:"g:i A" }}
+                                {% if flight.is_utc %}UTC{% endif %}
+                            </span>
+                            <span class="coupon-count blk f-14 lh-20 f-gry-dk-8">
+                                {{ flight.duration }}
+                            </span>
+                            <span class="store-rebate blk cb f-16 lh-20">{{ flight.company.cashback }}%</span>
+                        <span class="store-shop blk">
+                            <a href="/buy/?json={{ flight.json }}"
+                               class="button tert ghost">
+                                Buy ${{ flight.price }}
+                            </a>
+                		</span>
+                    </div>
+                </li>
+                {% endfor %}
+
+
+
+
+                <!--
+                <li class="store blk border-b pad-20 pad-30-lr alpha_z" data-store-id="12050">
+                    <div class="m-store-row-s alpha_z one-line">
+                        <a href="https://www.ebates.com/zipcar.com" data-navigation-id="54" name="stores_z" title="Zipcar - 4 Coupons &amp; Up to $6.00" class="name-link">
+                            <span class="store-name blk f-norm f-16 lh-20">Zipcar</span>
+                            <span class="coupon-count blk f-14 lh-20 f-gry-dk-8">4 Coupons</span>
+                            <span class="store-rebate blk cb f-16 lh-20">Up to $6.00
+			                <span class="wasStr f-12 lh-20 f-gry-dk-8 pad-5-l f-r">was up to $5.00</span>
+                            </span>
+                        </a>
+                        <span class="store-shop blk">
+            				<a href="https://www.ebates.com/zipcar.com_12050-xfas?category_id=54&amp;sourceName=Web-Desktop"
+                               data-navigation-id="54" target="_blank" class="button tert ghost"
+                               title="Shop Now at Zipcar">Shop Now</a>
+					</span>
+                    </div>
+                </li>
+                -->
+            </ul>
+        </div>
+        <div id="cb_data_temp" class="hide"></div>
+    </div>
+    <script>
+        $('div.loader').removeClass('hide');
+        var ebates = ebates || {};
+        ebates.catPageScope = ebates.catPageScope || {};
+        ebates.catPageScope.alphaFilterSet = {};
+        var initializeStoreList = function() {
+            //Filter handler
+            for (var i = 65; i < 91; i++) {
+                ebates.catPageScope.alphaFilterSet[String.fromCharCode(i)] = false;
+            }
+            ebates.catPageScope.alphaFilterSet['digit'] = false;
+            $('#store-sort .store').each(function() {
+                var c = $(this).find('.store-name').html().charAt(0).toUpperCase();
+                if (/\d/.test(c)) {
+                    ebates.catPageScope.alphaFilterSet['digit'] = true;
+                } else {
+                    ebates.catPageScope.alphaFilterSet[c] = true;
+                }
+            });
+            for (var i in ebates.catPageScope.alphaFilterSet) {
+                if (!ebates.catPageScope.alphaFilterSet[i]) {
+                    if (i === 'digit') {
+                        $('.alpha_filter.digit').addClass('inactive');
+                    } else {
+                        $('.alpha_filter.filter_' + i).addClass('inactive');
+                    }
+                }
+            }
+            $(function() {
+                $('.two-lines').each(function() {
+                    if ($(this).hasClass('.store-name') && $(this).html().length <= 29) {
+                        $(this).addClass('mar-25-t');
+                    }
+                });
+            })
+            ebates.catPageScope.storeListByAlpha = $('#store-list-container').html();
+        }
+        initializeStoreList();
+        $('div.loader').addClass('hide');
+
+        $('#sort-merchants .sort-by').on('click', function() {
+            var e = $(this);
+            if (e.hasClass('selected')) {
+                return;
+            }
+            $('div.loader').removeClass('hide');
+            setTimeout(function() {
+                if (e.data('value') === 'alpha') {
+                    $('#store-list-container').html(ebates.catPageScope.storeListByAlpha);
+                } else if (e.data('value') === 'cb') {
+                    if (!ebates.catPageScope.storeListByCb) {
+                        jQuery.get("/ajax/stores/sort.htm", {
+                            sort: 'cb',
+                            categoryid: '54'
+                        }).done(function(data) {
+                            $('#store-list-container').html(data);
+                            ebates.catPageScope.storeListByCb = data;
+                            $('.alpha_filter.active').trigger('focus').trigger('click');
+                        });
+                    } else {
+                        $('#store-list-container').html(ebates.catPageScope.storeListByCb);
+                    }
+                } else if (e.data('value') === 'popular') {
+                    if (!ebates.catPageScope.storeListByPopular) {
+                        jQuery.get("/ajax/stores/sort.htm", {
+                            sort: 'popular',
+                            categoryid: '54'
+                        }).done(function(data) {
+                            $('#store-list-container').html(data);
+                            ebates.catPageScope.storeListByPopular = data;
+                            $('.alpha_filter.active').trigger('focus').trigger('click');
+                        });
+                    } else {
+                        $('#store-list-container').html(ebates.catPageScope.storeListByPopular);
+                    }
+                }
+                $('#sort-merchants .sort-by').removeClass('selected');
+                e.addClass('selected');
+                $('#store-sort .store').addClass('by-alpha').addClass('hide');
+                $('.alpha_filter.active').trigger('focus').trigger('click');
+                setTimeout(function() {
+                    $('div.loader').addClass('hide');;
+                }, 500);
+            }, 200);
+        });
+
+        $('.alpha_filter').on('click', function() {
+            if ($(this).hasClass('inactive')) {
+                return;
+            }
+            $('.alpha_filter').removeClass('active');
+            $(this).addClass('active');
+            var filter = $(this).html();
+            $('#store-sort .store').addClass('hide').removeClass('by-alpha');
+            if (filter == 'ALL') {
+                $('#store-sort .store').addClass('by-alpha');
+            } else if (filter == '0-9') {
+                for (var i = 0; i < 10; i++) {
+                    $('#store-sort .store.alpha_' + i).addClass('by-alpha');
+                }
+            } else {
+                var c = filter.toLowerCase();
+                $('#store-sort .store.alpha_' + c).addClass('by-alpha');
+            }
+            $('#store-sort .store.by-alpha').removeClass('hide');
+            var leftRailHeight = 0;
+            leftRailHeight = $('#right-blk').innerHeight() ? $('#right-blk').innerHeight() : $('#left-blk').innerHeight();
+            $('#sort_and_filter_body').css('min-height', leftRailHeight + $('#side-scroll-target').innerHeight() - 20 + 'px');
+        });
+        $('.alpha_filter.inactive').on('click', function() {
+            event.preventDefault();
+        });
+        setTimeout(function() {
+            if ($('.lyft-store').length > 0) {
+                var lyftEc = 'Lyft',
+                    lyftEt = '';
+                if (location.pathname === '/stores/all/index.htm') {
+                    lyftEt = 'All stores page';
+                } else {
+                    lyftEt = 'Category page';
+                }
+                $(document).trigger('stats', {
+                    data: [],
+                    map: {
+                        external: {
+                            ec: lyftEc,
+                            et: lyftEt,
+                            ea: 'pageview'
+                        }
+                    }
+                });
+                $('.lyft-store').on('click', function() {
+                    $(document).trigger('stats', {
+                        data: [],
+                        map: {
+                            external: {
+                                ec: lyftEc,
+                                et: lyftEt,
+                                ea: 'Click lyft link'
+                            }
+                        }
+                    });
+                });
+            }
+        }, 2000)
+    </script>
+
+</div>
+{% endblock %}
