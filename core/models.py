@@ -49,6 +49,7 @@ class FlightCompany(models.Model):
 
 
 class Store(models.Model):
+    logo = models.ImageField(upload_to='store_logos', blank=False, null=False)
     name = models.CharField(max_length=100)
     cashback = models.CharField(max_length=32)
 

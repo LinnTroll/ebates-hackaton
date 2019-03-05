@@ -147,8 +147,10 @@ class BuyPage(TemplateView):
                 continue
 
             store_id = dst_delivery['store_id']
+            store_logo = Store.objects.get(pk=store_id).logo
             stores_ids.add(store_id)
             suggestions.append({
+                'store_logo': store_logo,
                 'store_id': store_id,
                 'src_price': f'{src_price:.2f}',
                 'dst_price': f'{dst_price:.2f}',
@@ -164,14 +166,8 @@ class BuyPage(TemplateView):
     def get_suggest_products(self):
         dst_airport = Airports.objects.get(pk=self.request.GET.get('dst'))
         dst_country = dst_airport.city.country
-
         products = Product.objects.filter(recommend__recommendcountry__country=dst_country)
-
-        print('####', products)
-        # dst_airport = self.request.GET.get('dst')
-        # dst_country = dst_airport.city.country
-        # queryset = Recommend.filter(country=dst_country))
-        # return queryset
+        return products
 
     def convert_time(self, flight):
         city = Airports.objects.get(code=flight['src'])
@@ -224,14 +220,3 @@ class AirportsListView(ListView):
     def render_to_response(self, context, **response_kwargs):
         resp = HttpResponse(serializers.serialize('json', self.object_list), content_type='application/json')
         return resp
-
-
-# class RecommendProductsListView(ListView):
-#     model = Recommend
-#
-#     def get_queryset(self):
-#         dst_airport = self.request.GET.get('dst')
-#         dst_country = dst_airport.city.country
-#         queryset = super().get_queryset()
-#         queryset = queryset.filter(Q(country=dst_country))
-#         return queryset
