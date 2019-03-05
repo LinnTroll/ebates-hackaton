@@ -1,5 +1,6 @@
 import datetime
 import json
+from urllib.parse import urlencode
 
 import pytz
 from django.core import serializers
@@ -22,6 +23,7 @@ from core.models import (
 class MainPage(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         self.flight_form = FlightSearchForm(request.GET or None)
+        self.request_data = dict(self.request.GET.items())
         return super().dispatch(request, *args, **kwargs)
 
     def get_template_names(self):
@@ -38,9 +40,12 @@ class MainPage(TemplateView):
         if self.flight_form.is_valid():
             src = self.flight_form['src'].value()
             dst = self.flight_form['dst'].value()
-            date_from = datetime.datetime.strptime(self.flight_form['date_from'].value(), '%d/%m/%Y').date()
-            # date_to = datetime.datetime.strptime(form['date_to'].value(), '%d/%m/%Y').date()
-            flights = list(get_flights(src, dst, date_from, date_from))
+            if 'back' in self.request_data:
+                date_to = datetime.datetime.strptime(self.flight_form['date_to'].value(), '%d/%m/%Y').date()
+                flights = list(get_flights(dst, src, date_to, date_to))
+            else:
+                date_from = datetime.datetime.strptime(self.flight_form['date_from'].value(), '%d/%m/%Y').date()
+                flights = list(get_flights(src, dst, date_from, date_from))
             companies_codes = set()
             sources_codes = set()
             for flight in flights:
@@ -49,7 +54,8 @@ class MainPage(TemplateView):
             sources = {c.code: c for c in Airports.objects.filter(code__in=sources_codes)}
             companies = {c.iata: c for c in FlightCompany.objects.filter(iata__in=companies_codes)}
             for flight in flights:
-                flight['json'] = json.dumps(flight, default=self.json_flights_defaults)
+                flight_json = json.dumps(flight, default=self.json_flights_defaults)
+                # flight['json'] = json.dumps(flight, default=self.json_flights_defaults)
                 city = sources[flight['src']].city
                 flight['company'] = companies[flight['company']]
                 flight['city'] = city
@@ -60,6 +66,25 @@ class MainPage(TemplateView):
                     local_tz = pytz.utc
                     flight['is_utc'] = True
                 flight['local_date'] = flight['date'].astimezone(local_tz).replace(tzinfo=None)
+
+                if self.request.GET.get('roundTrip') == 'true':
+                    if 'back' in self.request_data:
+                        buy_url = '/buy?{}'.format(urlencode({
+                            'bck_flight': flight_json,
+                            **self.request_data,
+                        }))
+                    else:
+                        buy_url = '/?{}'.format(urlencode({
+                            'fwd_flight': flight_json,
+                            **self.request_data,
+                            **{'back': True}
+                        }))
+                else:
+                    buy_url = '/buy/?{}'.format(urlencode({
+                        'fwd_flight': flight_json,
+                        **self.request_data
+                    }))
+                flight['buy_url'] = buy_url
             return flights
 
     def get_context_data(self, **kwargs):
@@ -69,22 +94,25 @@ class MainPage(TemplateView):
         return context_data
 
 
-
 class BuyPage(TemplateView):
     template_name = 'core/buy.html'
-    flight = None
+    fwd_flight = None
+    bck_flight = None
 
     def dispatch(self, request, *args, **kwargs):
-        raw_json = request.GET.get('json')
-        if raw_json:
-            self.flight = json.loads(raw_json)
+        raw_fwd_flight = request.GET.get('fwd_flight')
+        if raw_fwd_flight:
+            self.fwd_flight = json.loads(raw_fwd_flight)
+        raw_bck_flight = request.GET.get('bck_flight')
+        if raw_bck_flight:
+            self.bck_flight = json.loads(raw_bck_flight)
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['flight'] = self.flight
+        context_data['fwd_flight'] = self.fwd_flight
+        context_data['bck_flight'] = self.bck_flight
         return context_data
-
 
 
 class AirportsListView(ListView):
