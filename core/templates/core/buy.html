@@ -87,7 +87,7 @@
 
         </ul>
     </div>
-
+        PRODS: {{ suggest_products }}
     <div id="all-products" class="prod-serp blk blk-grou pos-rel">
         <div class="product-blk prod search-blk pointer blk-reg blk border pad-20 mar-0-r col-fourth product de-duped rat-processed">
             <div class="prodphoto bblk square-165 center pos-rel"
@@ -116,6 +116,16 @@
         </div>
     </div>
 
+
+
+    <br>
+    <br>
+    <br>
+    <hr>
+    {% for delivery in suggest_deliveries %}
+        Deliver for {{ delivery.store }} <s>${{ delivery.src_price }}</s> ${{ delivery.dst_price }} in {{ delivery.dst_country.name }}
+        <hr>
+    {% endfor %}
 </div>
 
 

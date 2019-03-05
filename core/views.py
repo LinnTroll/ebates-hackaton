@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 import pytz
 from django.core import serializers
-from django.db.models import Q
+from django.db.models import Q, Min
 from django.http import HttpResponse
 from django.views.generic import (
     ListView,
@@ -14,10 +14,13 @@ from django.views.generic import TemplateView
 from api.skypicker_api import get_flights
 from core.forms import FlightSearchForm
 from core.models import (
+    Store,
     Airports,
     FlightCompany,
     Recommend,
+    Product,
     Cities,
+    StoreDelivery,
 )
 
 
@@ -109,9 +112,69 @@ class BuyPage(TemplateView):
             self.bck_flight = json.loads(raw_bck_flight)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_suggest_deliveries(self):
+        src_airport = Airports.objects.get(code=self.fwd_flight['src'])
+        dst_airport = Airports.objects.get(code=self.fwd_flight['dst'])
+        src_country = src_airport.city.country
+        dst_country = dst_airport.city.country
+        if src_country == dst_country:
+            return
+
+        src_deliveries = StoreDelivery.objects \
+            .filter(dst=src_country) \
+            .exclude(src=src_country) \
+            .values('store_id') \
+            .annotate(Min('price'))
+
+        src_deliveries_map = {d['store_id']: d for d in src_deliveries}
+
+        dst_deliveries = StoreDelivery.objects \
+            .filter(dst=dst_country) \
+            .exclude(src=dst_country) \
+            .values('store_id') \
+            .annotate(Min('price'))
+
+        suggestions = []
+        stores_ids = set()
+        for dst_delivery in dst_deliveries:
+            src_delivery = src_deliveries_map.get(dst_delivery['store_id'])
+            if not src_delivery:
+                continue
+
+            src_price = src_delivery['price__min']
+            dst_price = dst_delivery['price__min']
+            if src_price <= dst_price:
+                continue
+
+            store_id = dst_delivery['store_id']
+            stores_ids.add(store_id)
+            suggestions.append({
+                'store_id': store_id,
+                'src_price': f'{src_price:.2f}',
+                'dst_price': f'{dst_price:.2f}',
+                'dst_country': dst_country,
+            })
+
+        stores_map = {s.pk: s for s in Store.objects.filter(pk__in=stores_ids)}
+        for suggest in suggestions:
+            suggest['store'] = stores_map[suggest['store_id']]
+
+        return suggestions
+
+    def get_suggest_products(self):
+        dst_airport = Airports.objects.get(pk=self.request.GET.get('dst'))
+        dst_country = dst_airport.city.country
+
+        products = Product.objects.filter(recommend__recommendcountry__country=dst_country)
+
+        print('####', products)
+        # dst_airport = self.request.GET.get('dst')
+        # dst_country = dst_airport.city.country
+        # queryset = Recommend.filter(country=dst_country))
+        # return queryset
+
     def convert_time(self, flight):
         city = Airports.objects.get(code=flight['src'])
-        local_tz = pytz.timezone(city.city.timezone)
         try:
             local_tz = pytz.timezone(city.city.timezone)
         except pytz.exceptions.UnknownTimeZoneError:
@@ -131,6 +194,8 @@ class BuyPage(TemplateView):
         context_data['fwd_flight']['company'] = self.get_company(self.fwd_flight)
         context_data['fwd_flight']['date'] = self.convert_time(self.fwd_flight)
         context_data['bck_flight'] = self.bck_flight
+        context_data['suggest_products'] = self.get_suggest_products()
+        context_data['suggest_deliveries'] = self.get_suggest_deliveries()
         if self.bck_flight:
             context_data['bck_flight']['company'] = self.get_company(self.bck_flight)
             context_data['bck_flight']['date'] = self.convert_time(self.bck_flight)
@@ -161,12 +226,12 @@ class AirportsListView(ListView):
         return resp
 
 
-class RecommendProductsListView(ListView):
-    model = Recommend
-
-    def get_queryset(self):
-        dst_airport = self.request.GET.get('dst')
-        dst_country = dst_airport.city.country
-        queryset = super().get_queryset()
-        queryset = queryset.filter(Q(country=dst_country))
-        return queryset
+# class RecommendProductsListView(ListView):
+#     model = Recommend
+#
+#     def get_queryset(self):
+#         dst_airport = self.request.GET.get('dst')
+#         dst_country = dst_airport.city.country
+#         queryset = super().get_queryset()
+#         queryset = queryset.filter(Q(country=dst_country))
+#         return queryset
