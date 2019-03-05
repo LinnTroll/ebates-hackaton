@@ -19,12 +19,17 @@ $(function () {
                 response(data.map(function (item) {
                     return {
                         label: item.pk + ' - ' + item.fields.name,
-                        value: item.pk + ' - ' + item.fields.name
+                        value: item.pk + ' - ' + item.fields.name,
+                        pk: item.pk
                     };
                 }));
             });
         },
         minLength: 1,
+        select: function (event, data) {
+            var $input = $(event.target);
+            $input.parent().find('.flight_info').val(data.item.pk);
+        },
     });
 
     var $datepicker = $('.datepicker');
