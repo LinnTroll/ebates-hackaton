@@ -17,7 +17,10 @@ $(function () {
         source: function (request, response) {
             $.getJSON('/api/airports/list/', request, function (data, status, xhr) {
                 response(data.map(function (item) {
-                    return {label: item.pk + ' - ' + item.fields.name, value: item.pk};
+                    return {
+                        label: item.pk + ' - ' + item.fields.name,
+                        value: item.pk + ' - ' + item.fields.name
+                    };
                 }));
             });
         },

@@ -42,8 +42,8 @@ class MainPage(TemplateView):
 
     def get_flights(self):
         if self.flight_form.is_valid():
-            src = self.flight_form['src'].value()
-            dst = self.flight_form['dst'].value()
+            src = self.flight_form['src'].value().split(' - ')[0]
+            dst = self.flight_form['dst'].value().split(' - ')[0]
             if 'back' in self.request_data:
                 date_to = datetime.datetime.strptime(self.flight_form['date_to'].value(), '%d/%m/%Y').date()
                 flights = list(get_flights(dst, src, date_to, date_to))
