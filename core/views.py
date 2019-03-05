@@ -54,12 +54,12 @@ class MainPage(TemplateView):
             sources = {c.code: c for c in Airports.objects.filter(code__in=sources_codes)}
             companies = {c.iata: c for c in FlightCompany.objects.filter(iata__in=companies_codes)}
             for flight in flights:
+                flight['duration'] = str(flight['duration'])[:-3]
                 flight_json = json.dumps(flight, default=self.json_flights_defaults)
                 # flight['json'] = json.dumps(flight, default=self.json_flights_defaults)
                 city = sources[flight['src']].city
                 flight['company'] = companies[flight['company']]
                 flight['city'] = city
-                flight['duration'] = str(flight['duration'])[:-3]
                 try:
                     local_tz = pytz.timezone(city.timezone)
                 except pytz.exceptions.UnknownTimeZoneError:
