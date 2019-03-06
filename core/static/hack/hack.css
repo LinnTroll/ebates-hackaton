@@ -74,3 +74,8 @@
 .promo-boxes {
     display: table;
 }
+
+.prod-image{
+    display: table-cell;
+    vertical-align: middle;
+}
