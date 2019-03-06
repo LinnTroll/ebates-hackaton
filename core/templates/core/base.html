@@ -707,7 +707,13 @@
                                     <li class="account-menu nopad-r f-right pointer">
                                         <a href="https://www.ebates.com/my-account.htm" rel="" data-navigation-id="22832" data-click-category="Global Nav" data-click-action="Click My Name" class="account-menu-trigger member-name relative iblk f-right pointer" data-event-signature="ec,ea" data-ec="Global Nav" data-ea="Header Member Name - Click">
                                             <span class="no-wrap iblk frt pad-5-l f-15 lh-40 tcb trans-color">$0.00  <span class="fa-angle-down pad-5-l f-15 trans-color "></span></span>
-                                            <span class="user-name no-wrap iblk lh-40 f-15 trans-color">Павел</span>
+                                            <span class="user-name no-wrap iblk lh-40 f-15 trans-color">
+                                                {% if request.user.first_name %}
+                                                    {{ request.user.first_name }}
+                                                {% else %}
+                                                    {{ request.user.username }}
+                                                {% endif %}
+                                            </span>
                                         </a>
                                         <ul class="dropdown bg-reg border nohover hide f-left b-box">
                                             <li class="pad-10-t"><a href="https://www.ebates.com/my-account.htm" rel="" data-click-category="Global Nav" data-click-action="Click My Account" data-navigation-id="22833" class="f-norm lh-30 bblk" data-event-signature="ec,ea" data-ec="Global Nav" data-ea="Member My Acount - Click">My Account</a></li>
