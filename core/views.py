@@ -16,10 +16,9 @@ from core.forms import FlightSearchForm
 from core.models import (
     Store,
     Airports,
-    FlightCompany,
-    Recommend,
-    Product,
     Cities,
+    FlightCompany,
+    Product,
     StoreDelivery,
 )
 
@@ -57,6 +56,7 @@ class MainPage(TemplateView):
                 sources_codes.add(flight['src'])
             sources = {c.code: c for c in Airports.objects.filter(code__in=sources_codes)}
             companies = {c.iata: c for c in FlightCompany.objects.filter(iata__in=companies_codes)}
+            flights = [f for f in flights if f['company'] in companies]
             for flight in flights:
                 flight['duration'] = str(flight['duration'])[:-3]
                 flight_json = json.dumps(flight, default=self.json_flights_defaults)
@@ -219,5 +219,16 @@ class AirportsListView(ListView):
         return self.model.objects.none()
 
     def render_to_response(self, context, **response_kwargs):
-        resp = HttpResponse(serializers.serialize('json', self.object_list), content_type='application/json')
+        cities_pks = set([a.city.pk for a in self.object_list])
+        cities = Cities.objects.filter(pk__in=cities_pks)
+        serialized_cities = serializers.serialize('python', cities)
+        cities_map = {c['pk']: c for c in serialized_cities}
+        serialized_airports = serializers.serialize('python', self.object_list)
+        for item in serialized_airports:
+            city_id = item['fields']['city']
+            item['fields']['city'] = cities_map[city_id]
+        resp = HttpResponse(
+            json.dumps(serialized_airports),
+            content_type='application/json',
+        )
         return resp

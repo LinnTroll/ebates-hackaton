@@ -4,142 +4,155 @@
 
 
 {% block content %}
-<div class="blk main mar-10-b">
-    <div class="pad-30 pad-20-tb blk-reg border">
-    </div>
+    <div class="blk main mar-10-b">
+        <div class="pad-30 pad-20-tb blk-reg border">
+            <h3>You order:</h3>
+        </div>
 
-
-    <div class="blk-reg f-16 flights-list" id="store-list-container">
-        <ul id="store-sort" class="store-sort">
-            <li class="store blk border-b pad-20 pad-30-lr alpha_a" data-store-id="9814">
-                <div class="m-store-row-s alpha_a one-line">
-                    <span class="f-b f-20 lh-24">
-                        Flight #{{ fwd_flight.company.iata }} {{ fwd_flight.number }}: from {{ fwd_flight.src }} to {{ fwd_flight.dst }}
-                    </span>
-                    <span style="text-align:right;">{{ fwd_flight.date }}</span>
-                </div>
-                <div class="m-store-row-s alpha_a one-line">
-                    <span class="store-name blk  f-norm f-16 lh-20">
-                        {% if fwd_flight.company.image %}
-                            <img src="/media/airlines/{{ fwd_flight.company.iata }}.png"
-                                 height="32" width="32">
-                        {% else %}
-                            <img src="/static/img/empty-icon.png"
-                                 height="32" width="32">
-                        {% endif %}
-                        <span class="flight-name-text">
-                            {{ fwd_flight.company.name }}
+        <div class="blk-reg f-16 flights-list buy-page" id="store-list-container">
+            <ul class="store-sort">
+                <li class="store blk border-b pad-20 pad-30-lr alpha_a">
+                    <div class="m-store-row-s alpha_a one-line">
+                        <div class="f-16 lh-24" style="margin-bottom: 4px;">
+                            {% if bck_flight %}
+                                Direct flight,
+                            {% else %}
+                                You flight,
+                            {% endif %}
+                            {{ fwd_flight.date|date }}:
+                        </div>
+                        <div class="f-b f-18 lh-24">
+                            {{ fwd_flight.company.iata }} {{ fwd_flight.number }}
+                            <span class="f-14 lh-24">
+                                from {{ fwd_flight.src }} to {{ fwd_flight.dst }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="m-store-row-s alpha_a one-line">
+                        <span class="store-name blk  f-norm f-16 lh-20">
+                            {% if fwd_flight.company.image %}
+                                <img src="/media/airlines/{{ fwd_flight.company.iata }}.png"
+                                     height="32" width="32">
+                            {% else %}
+                                <img src="/static/img/empty-icon.png"
+                                     height="32" width="32">
+                            {% endif %}
+                            <span class="flight-name-text">
+                                {{ fwd_flight.company.name }}
+                            </span>
                         </span>
-                    </span>
-                    <span class="flight-number">
                         <span class="flight-time blk f-16 lh-20">
-                            {{ fwd_flight.date|time:"g:i A"  }}
-                        {% if fwd_flight.is_utc %}UTC{% endif %}
+                            {{ fwd_flight.date|time:"g:i A" }}
+                            {% if fwd_flight.is_utc %}UTC{% endif %}
                         </span>
                         <span class="coupon-count blk f-14 lh-20 f-gry-dk-8">
-                                Duration:
+                            Duration:
                             {{ fwd_flight.duration }}
                         </span>
-                    </span>
-                    <span class="store-rebate blk cb f-16 lh-20">
-                        Cash Back: {{ fwd_flight.company.cashback }}%
-                    </span>
-                    <span class="store-rebate blk cb f-16 lh-20" style="margin-left: 30px">
-                        Price: {{ fwd_flight.price }}$
-                    </span>
-                </div>
-            </li>
+                        <span class="store-rebate blk cb f-16 lh-20">
+                            Cash Back: {{ fwd_flight.company.cashback }}%
+                        </span>
+                        <span class="store-rebate store-rebate-price blk cb f-16 lh-20" style="margin-left: 30px">
+                            Price: ${{ fwd_flight.price }}
+                        </span>
+                    </div>
+                </li>
 
-            {% if bck_flight.company %}
-            <li class="store blk border-b pad-20 pad-30-lr alpha_a" data-store-id="9814">
-                <div class="m-store-row-s alpha_a one-line">
-                    <span class="f-b f-20 lh-24">
-                        Flight #{{ bck_flight.company.iata }} {{ bck_flight.number }}: from {{ bck_flight.src }} to {{ bck_flight.dst }}
-                    </span>
-                    <span style="text-align:right;">{{ bck_flight.date }}</span>
-                </div>
-                <div class="m-store-row-s alpha_a one-line">
-                    <span class="store-name blk  f-norm f-16 lh-20">
-                        {% if bck_flight.company.image %}
-                            <img src="/media/airlines/{{ bck_flight.company.iata }}.png"
-                                 height="32" width="32">
-                        {% else %}
-                            <img src="/static/img/empty-icon.png"
-                                 height="32" width="32">
-                        {% endif %}
-                        <span class="flight-name-text">
-                            {{ bck_flight.company.name }}
-                        </span>
-                    </span>
-                    <span class="flight-number">
-                        <span class="flight-time blk f-16 lh-20">
-                            {{ bck_flight.date|time:"g:i A" }}
-                        {% if bck_flight.is_utc %}UTC{% endif %}
-                        </span>
-                        <span class="coupon-count blk f-14 lh-20 f-gry-dk-8">
+                {% if bck_flight %}
+                    <li class="store blk border-b pad-20 pad-30-lr alpha_a">
+                        <div class="m-store-row-s alpha_a one-line">
+                            <div class="f-16 lh-24" style="margin-bottom: 4px;">Return
+                                flight, {{ bck_flight.date|date }}:
+                            </div>
+                            <div class="f-b f-18 lh-24">
+                                {{ bck_flight.company.iata }} {{ bck_flight.number }}
+                                <span class="f-14 lh-24">
+                                    from {{ bck_flight.src }} to {{ bck_flight.dst }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="m-store-row-s alpha_a one-line">
+                            <span class="store-name blk  f-norm f-16 lh-20">
+                                {% if bck_flight.company.image %}
+                                    <img src="/media/airlines/{{ bck_flight.company.iata }}.png"
+                                         height="32" width="32">
+                                {% else %}
+                                    <img src="/static/img/empty-icon.png"
+                                         height="32" width="32">
+                                {% endif %}
+                                <span class="flight-name-text">
+                                    {{ bck_flight.company.name }}
+                                </span>
+                            </span>
+                            <span class="flight-time blk f-16 lh-20">
+                                {{ bck_flight.date|time:"g:i A" }}
+                                {% if bck_flight.is_utc %}UTC{% endif %}
+                            </span>
+                            <span class="coupon-count blk f-14 lh-20 f-gry-dk-8">
                                 Duration:
-                            {{ bck_flight.duration }}
-                        </span>
-                    </span>
-                    <span class="store-rebate blk cb f-16 lh-20">
-                        Cash Back: {{ bck_flight.company.cashback }}%
-                    </span>
-                    <span class="store-rebate blk cb f-16 lh-20" style="margin-left: 30px">
-                        Price: {{ bck_flight.price }}$
-                    </span>
-                </div>
-            </li>
-            {% endif%}
+                                {{ bck_flight.duration }}
+                            </span>
+                            <span class="store-rebate blk cb f-16 lh-20">
+                                Cash Back: {{ bck_flight.company.cashback }}%
+                            </span>
+                            <span class="store-rebate blk cb f-16 lh-20" style="margin-left: 30px">
+                            Price: ${{ bck_flight.price }}
+                            </span>
+                        </div>
+                    </li>
+                {% endif %}
 
-        </ul>
-    </div>
-    {% if suggest_products %}
-    <h2 class="related-prods-title">You may need in your trip:</h2>
+                <li class="store blk border-b pad-20 pad-30-lr alpha_a">
+                    <a href="#"
+                       class="button secondary w-250"
+                       title="Activate Cash Back at Macy's">
+                        Buy now
+                        <span class="arrow arr-right"></span>
+                    </a>
+                </li>
 
-    <div id="all-products" class="prod-serp blk blk-grou pos-rel">
-        {% for product in suggest_products %}
-
-        <div class="product-blk prod search-blk pointer blk-reg blk border pad-20 mar-0-r col-fourth product de-duped rat-processed"
-             data-href="/media/{{ product.image }}">
-            <div class="prodphoto bblk square-165 center pos-rel">
-                <img class="photo lazy bblk blk-reg valign-mid" title="{{ product.name }}"
-                     src="/media/{{ product.image }}"
-                     alt="{{ product.name }}" style="display: block; max-width: 100%; max-height: 100%;">
-            </div>
-            <div class="prodinfo-blk pos-abs" style="width: 166px;">
-                <div class="prox-b f-gry pad-20-t pad-10-b f-14 lh-18 truncate">{{ product.store.name }}</div>
-                <div class="prodinfo pad-10-b">
-                    <div class="name f-14 lh-18 ht-36 f-gry coupon-ellipsis-2l prod-deal-ellipsis overflow-0"
-                         style="width: 165px;">
-                        <span class="f-gry title-part" title="{{ product.name }}">{{ product.name }}</span>
-                    </div>
-                </div>
-                <div class="pricing">
-                    <div class="f-16 lh-20">
-                        <span class="yourprice itemPrice prox-b f-gry">${{ product.regular_price }}</span>
-                    </div>
-                    <div class="cashbackval">
-                        <span class="prox-b cb f-16 lh-20">{{ product.store.cashback }} Cash Back</span>
-                    </div>
-                </div>
-            </div>
+            </ul>
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+        {% if suggest_products %}
+            <div id="all-products" class="prod-serp blk blk-grou pos-rel" style="margin-top: 20px;">
+                <h2 class="related-prods-title">You may need in your trip:</h2>
+                {% for product in suggest_products|slice:':4' %}
+                    <div class="product-blk prod search-blk pointer blk-reg blk border pad-20 mar-0-r col-fourth product de-duped rat-processed"
+                         data-href="/media/{{ product.image }}"{% if not forloop.first %} style="border-left: 0;"{% endif %}>
+                        <div class="prodphoto bblk square-165 center pos-rel">
+                            <img class="photo lazy bblk blk-reg valign-mid" title="{{ product.name }}"
+                                 src="/media/{{ product.image }}"
+                                 alt="{{ product.name }}" style="display: block; max-width: 100%; max-height: 100%;">
+                        </div>
+                        <div class="prodinfo-blk pos-abs" style="width: 166px;">
+                            <div class="prox-b f-gry pad-20-t pad-10-b f-14 lh-18 truncate">{{ product.store.name }}</div>
+                            <div class="prodinfo pad-10-b">
+                                <div class="name f-14 lh-18 ht-36 f-gry coupon-ellipsis-2l prod-deal-ellipsis overflow-0"
+                                     style="width: 165px;">
+                                    <span class="f-gry title-part" title="{{ product.name }}">{{ product.name }}</span>
+                                </div>
+                            </div>
+                            <div class="pricing">
+                                <div class="f-16 lh-20">
+                                    <span class="yourprice itemPrice prox-b f-gry">${{ product.regular_price }}</span>
+                                </div>
+                                <div class="cashbackval">
+                                    <span class="prox-b cb f-16 lh-20">{{ product.store.cashback }}% Cash Back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-
-    <br>
-    <br>
-    <br>
-    <hr>
-
-    {% if suggest_deliveries %}
-    <h1>Get a delivery to {{ suggest_deliveries.0.dst_country.name }} with a discount!</h1>
-    <div class="blk-reg f-16 promo-boxes">
-        <ul class="blk-group cols-4">
-    {% for delivery in suggest_deliveries %}
-                <li class="promo-block blk col b-box blk-reg mar-10-b ht-156 center bg-hover border">
+        {% if suggest_deliveries %}
+            <h1>Get a delivery to {{ suggest_deliveries.0.dst_country.name }} with a discount!</h1>
+            <div class="blk-reg f-16 promo-boxes">
+                <ul class="blk-group cols-4">
+                    {% for delivery in suggest_deliveries %}
+                        <li class="promo-block blk col b-box blk-reg mar-10-b ht-156 center bg-hover border">
                 <span class="blk pos-rel pad-10 pad-20-lr">
                 <span class="img-wrap bblk pad-20-t mar-10-b ht-27">
                 <img class="lazy logo" src="/media/{{ delivery.store_logo }}">
@@ -151,14 +164,14 @@
                     ${{ delivery.dst_price }}
                 </span>
                 </span>
-            </li>
+                        </li>
 
 
-    {% endfor %}
-        </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
 
 
 {% endblock %}

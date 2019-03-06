@@ -20,7 +20,6 @@
     display: block;
 }
 
-
 .cat-page .main .flights-list .store-sort li.store .store-rebate {
     width: 50px;
 }
@@ -31,26 +30,46 @@
     font-size: 14px;
 }
 
-.prodinfo-blk{
+.cat-page .main .buy-page .store-sort li.store .store-name {
+    width: 170px;
+}
+
+.cat-page .main .flights-list.buy-page .store-sort li.store .flight-time {
+    width: 105px;
+}
+
+.cat-page .main .buy-page .store-sort li.store .coupon-count {
+    width: 100px;
+}
+
+.cat-page .main .flights-list.buy-page .store-sort li.store .store-rebate {
+    width: 140px;
+}
+
+.cat-page .main .flights-list.buy-page .store-sort li.store .store-rebate.store-rebate-price {
+    width: 90px;
+}
+
+.prodinfo-blk {
     position: static;
 }
 
-.related-prods-title{
+.related-prods-title {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.delivery-price{
+.delivery-price {
     margin-left: 100px
 }
 
-.logo{
+.logo {
     display: inline;
     max-width: 100%;
     max-height: 100%;
     margin-bottom: 20px;
 }
 
-.promo-boxes{
+.promo-boxes {
     display: table;
 }

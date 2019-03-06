@@ -4,14 +4,19 @@
     <div class="blk flights-list">
         <div class="pad-30 pad-20-tb blk-reg border">
             <span class="f-b f-20 lh-24">
-            {% if request.GET.back %}
-                Flights: from {{ request.GET.dst }} to {{ request.GET.src }}, {{ request.GET.date_to }}
+            {% if flights %}
+                {% if request.GET.back %}
+                    Flights: from {{ request.GET.dst }} to {{ request.GET.src }}, {{ request.GET.date_to }}
+                {% else %}
+                    Flights: from {{ request.GET.src }} to {{ request.GET.dst }}, {{ request.GET.date_from }}
+                {% endif %}
             {% else %}
-                Flights: from {{ request.GET.src }} to {{ request.GET.dst }}, {{ request.GET.date_from }}
+                No flights from {{ request.GET.src }} to {{ request.GET.dst }}, {{ request.GET.date_from }}
             {% endif %}
             </span>
         </div>
 
+        {% if flights %}
         <div class="loader pos-abs hide" style="margin-left:381px;"></div>
         <div class="blk-reg f-16" id="store-list-container">
             <ul id="store-sort" class="store-sort">
@@ -41,18 +46,19 @@
                                 {{ flight.duration }}
                             </span>
                             <span class="store-rebate blk cb f-16 lh-20">{{ flight.company.cashback }}%</span>
-                        <span class="store-shop blk">
-                            <a href="{{ flight.buy_url }}"
-                               class="button tert ghost">
-                                Buy ${{ flight.price }}
-                            </a>
-                		</span>
+                            <span class="store-shop blk">
+                                <a href="{{ flight.buy_url }}"
+                                   class="button tert ghost">
+                                    Buy ${{ flight.price }}
+                                </a>
+                            </span>
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
         <div id="cb_data_temp" class="hide"></div>
+        {% endif %}
     </div>
     <script>
         $('div.loader').removeClass('hide');
