@@ -114,12 +114,14 @@
 
             </ul>
         </div>
+
         {% if suggest_products %}
             <div id="all-products" class="prod-serp blk blk-grou pos-rel" style="margin-top: 20px;">
                 <h2 class="related-prods-title">You may need in your trip:</h2>
                 {% for product in suggest_products|slice:':4' %}
                     <div class="product-blk prod search-blk pointer blk-reg blk border pad-20 mar-0-r col-fourth product de-duped rat-processed"
-                         data-href="/media/{{ product.image }}"{% if not forloop.first %} style="border-left: 0;"{% endif %}>
+                         data-href="/media/{{ product.image }}"{% if not forloop.first %}
+                         style="border-left: 0;"{% endif %}>
                         <div class="prodphoto bblk square-165 center pos-rel">
                             <img class="photo lazy bblk blk-reg valign-mid" title="{{ product.name }}"
                                  src="/media/{{ product.image }}"
@@ -146,32 +148,34 @@
                 {% endfor %}
             </div>
         {% endif %}
-
         {% if suggest_deliveries %}
-            <h1>Get a delivery to {{ suggest_deliveries.0.dst_country.name }} with a discount!</h1>
-            <div class="blk-reg f-16 promo-boxes">
-                <ul class="blk-group cols-4">
-                    {% for delivery in suggest_deliveries %}
-                        <li class="promo-block blk col b-box blk-reg mar-10-b ht-156 center bg-hover border">
-                <span class="blk pos-rel pad-10 pad-20-lr">
-                <span class="img-wrap bblk pad-20-t mar-10-b ht-27">
-                <img class="lazy logo" src="/media/{{ delivery.store_logo }}">
-                </span>
-                <span class="was_rebate blk f-12 lh-12 ht-12 f-gry-dk-8">
-                     <s>${{ delivery.src_price }}</s>
-                </span>
-                <span class="now_rebate blk prox-b cb mar-5-tb">
-                    ${{ delivery.dst_price }}
-                </span>
-                </span>
-                        </li>
-
-
-                    {% endfor %}
-                </ul>
+            <div id="all-products" class="prod-serp blk blk-grou pos-rel" style="margin-top: 20px;">
+                <h2 class="related-prods-title">
+                    Get a delivery to {{ suggest_deliveries.0.dst_country.name }} with a discount!
+                </h2>
+                <div class="blk-reg f-16 promo-boxes" style="width: 100%; background: transparent;">
+                    <ul class="blk-group cols-4">
+                        {% for delivery in suggest_deliveries|slice:':4' %}
+                            <li class="promo-block blk col b-box blk-reg mar-10-b ht-156 center bg-hover border">
+                                <span class="blk pos-rel pad-10 pad-20-lr">
+                                    <span class="img-wrap bblk pad-20-t mar-10-b ht-27">
+                                        <img class="lazy logo" src="{{ delivery.store.logo.url }}">
+                                    </span>
+                                    <span class="blk f-b f-14 lh-38">
+                                         {{ delivery.store.name }}
+                                    </span>
+                                    <span class="was_rebate f-12 lh-12 ht-12 f-gry-dk-8">
+                                         <s>${{ delivery.src_price }}</s>
+                                    </span>
+                                    <span class="now_rebate  prox-b cb mar-5-tb">
+                                        ${{ delivery.dst_price }}
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         {% endif %}
     </div>
-
-
 {% endblock %}
