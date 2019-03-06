@@ -144,6 +144,7 @@ class BuyPage(TemplateView):
             src_price = src_delivery['price__min']
             dst_price = dst_delivery['price__min']
             if src_price <= dst_price:
+                print('!!!', src_price, dst_price)
                 continue
 
             store_id = dst_delivery['store_id']
@@ -182,7 +183,7 @@ class BuyPage(TemplateView):
     def get_company(self, flight):
         company = flight.get('company')
         if company:
-            return FlightCompany.objects.get(iata=company)
+            return FlightCompany.objects.filter(iata=company)[0]
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

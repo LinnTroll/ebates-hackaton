@@ -8,15 +8,12 @@ from core.models import Countries, Store, StoreDelivery
 
 class Command(BaseCommand):
     def get_random_price(self, src, dst):
-        if random.randint(0, 10) != 0:
-            return None
-
         if src == dst:
             base = random.randint(2, 10)
         else:
-            if random.randint(0, 10) == 0:
+            if random.randint(0, 100) == 0:
                 base = random.randint(8, 14)
-            elif random.randint(0, 5) == 0:
+            elif random.randint(0, 50) == 0:
                 base = random.randint(14, 25)
             else:
                 base = random.randint(25, 100)

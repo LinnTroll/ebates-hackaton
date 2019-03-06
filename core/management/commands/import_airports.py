@@ -61,7 +61,7 @@ class Command(BaseCommand):
                 )
 
         Cities.objects.bulk_create(cities.values())
-        cities = {(c.country.name, c.name): c for c in Cities.objects.all()}
+        cities = {(c.country.name.lower(), c.name.lower()): c for c in Cities.objects.all()}
 
         for n, row in enumerate(csvfile):
             airport_name = row[1].strip()

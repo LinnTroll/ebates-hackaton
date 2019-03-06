@@ -72,7 +72,16 @@ WSGI_APPLICATION = 'ebates.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-if 'DATABASE_USER' in os.environ:
+IS_DEVELOP = 'DATABASE_USER' not in os.environ
+
+if IS_DEVELOP:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -81,13 +90,6 @@ if 'DATABASE_USER' in os.environ:
             'PASSWORD': os.environ['DATABASE_PASSWORD'],
             'HOST': os.environ['DATABASE_HOST'],
             'PORT': int(os.environ.get('DATABASE_PORT', 3306)),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 
@@ -124,10 +126,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-DEFAULT_FILE_STORAGE = 'api.gcs.GoogleCloudMediaStorage'
-STATICFILES_STORAGE = 'api.gcs.GoogleCloudStaticStorage'
-GS_BUCKET_NAME = 'ebates-hackaton'
-GS_PROJECT_ID = 'qa-edc-ew'
+if not IS_DEVELOP:
+    DEFAULT_FILE_STORAGE = 'api.gcs.GoogleCloudMediaStorage'
+    STATICFILES_STORAGE = 'api.gcs.GoogleCloudStaticStorage'
+    GS_BUCKET_NAME = 'ebates-hackaton'
+    GS_PROJECT_ID = 'qa-edc-ew'
 
 STATIC_URL = '/static/'
 
