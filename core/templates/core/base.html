@@ -2661,7 +2661,10 @@
 
                                             <!-- from  -->
                                             <div class="col-half flt clearfix ht-46 blk pos-rel pad-5-r">
-                                                <input name="src" type="hidden" class="flight_info" value="">
+                                                <input name="src"
+                                                       type="hidden"
+                                                       class="flight_info"
+                                                       value="{{ form.src_value.value | default:'' }}">
                                                 <input name="src_value"
                                                        id="flight_from"
                                                        class="border ht-46 round3 blk pad-21-l pad-58-r cityairportsearch"
@@ -2674,7 +2677,10 @@
                                             </div>
                                             <!-- to -->
                                             <div class="col-half pad-5-l flt clearfix ht-46 blk pos-rel">
-                                                <input name="dst" type="hidden" class="flight_info" value="">
+                                                <input name="dst"
+                                                       type="hidden"
+                                                       class="flight_info"
+                                                       value="{{ form.dst_value.value | default:'' }}">
                                                 <input name="dst_value"
                                                        id="flight_to"
                                                        class="border ht-46 round3 blk pad-21-l pad-58-r cityairportsearch"
