@@ -75,7 +75,11 @@
     display: table;
 }
 
-.prod-image{
+.prod-image {
     display: table-cell;
     vertical-align: middle;
+}
+
+.cat-page .main .store-sort li.store .store-shop .button {
+    white-space: nowrap;
 }
