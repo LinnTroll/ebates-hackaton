@@ -7,7 +7,7 @@ metadata:
     app: hackaton
 spec:
   type: LoadBalancer
-  loadBalancerIP: "35.225.11.75"
+  loadBalancerIP: "35.202.215.78"
   ports:
     - port: 80
       targetPort: 8000
