@@ -2662,25 +2662,33 @@
                                             <!-- from  -->
                                             <div class="col-half flt clearfix ht-46 blk pos-rel pad-5-r">
                                                 <input name="src"
+                                                       type="hidden"
+                                                       class="flight_info"
+                                                       value="{{ form.src.value | default:'' }}">
+                                                <input name="src_value"
                                                        id="flight_from"
                                                        class="border ht-46 round3 blk pad-21-l pad-58-r cityairportsearch"
                                                        type="text"
                                                        placeholder="From City or Airport Code"
                                                        data-role="From Location"
                                                        autocomplete="off"
-                                                       value="{{ form.src.value | default:'' }}" />
+                                                       value="{{ form.src_value.value | default:'' }}" />
                                                 <i class="fa fa-map-marker pos-abs" aria-hidden="true"></i>
                                             </div>
                                             <!-- to -->
                                             <div class="col-half pad-5-l flt clearfix ht-46 blk pos-rel">
                                                 <input name="dst"
+                                                       type="hidden"
+                                                       class="flight_info"
+                                                       value="{{ form.dst.value | default:'' }}">
+                                                <input name="dst_value"
                                                        id="flight_to"
                                                        class="border ht-46 round3 blk pad-21-l pad-58-r cityairportsearch"
                                                        type="text"
                                                        placeholder="To City or Airport Code"
                                                        data-role="Destination"
                                                        autocomplete="off"
-                                                       value="{{ form.dst.value | default:'' }}" />
+                                                       value="{{ form.dst_value.value | default:'' }}" />
                                                 <i class="fa fa-map-marker pos-abs" aria-hidden="true"></i>
                                             </div>
                                         </div>
