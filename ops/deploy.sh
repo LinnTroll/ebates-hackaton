@@ -8,4 +8,4 @@ kubectl apply -f ops/kube/create-web-deployment.yaml
 PODS=$(kubectl get pods --namespace=edc-catalog | grep hackaton- | awk '{print $1}')
 kubectl delete pods $PODS
 
-watch bash -c "kubectl get pods | grep hackaton-"
+watch kubectl get pods
