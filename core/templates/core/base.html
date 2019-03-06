@@ -2013,7 +2013,7 @@
 
                             <link href="/static/travel_widget-ffef0903a3.css" rel="stylesheet" type="text/css">
 
-                            <ul class="nav-tabs clearfix f-cent" data-current-tab="{{ request.GET.tab }}">
+                            <ul class="nav-tabs clearfix f-cent" data-current-tab="{{ request.GET.tab|default:"tab-flights" }}">
                                 <li class="travel-tab-hotels blk"><a class="travel-tabs active nohover blk" data-tab="tab-hotels">HOTELS &amp; RENTALS</a></li>
                                 <li class="travel-tab-cars blk"><a class="travel-tabs nohover blk" data-tab="tab-cars">CARS</a></li>
                                 <li class="travel-tab-flights blk"><a class="travel-tabs nohover blk" data-tab="tab-flights">FLIGHTS</a></li>
@@ -2646,7 +2646,7 @@
 
                                         <!-- round/one way -->
                                         <div class="mar-20-b blk">
-                                            <input type="hidden" name="roundTripValue" value="{{ request.GET.roundTrip }}">
+                                            <input type="hidden" name="roundTripValue" value="{{ request.GET.roundTrip|default:'true' }}">
                                             <div class="flt">
                                                 <div class="rTrip_btn checked flt">
                                                     <div class="dot"></div>

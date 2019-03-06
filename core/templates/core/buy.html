@@ -96,8 +96,8 @@
                             <span class="store-rebate blk cb f-16 lh-20">
                                 Cash Back: {{ bck_flight.company.cashback }}%
                             </span>
-                            <span class="store-rebate blk cb f-16 lh-20" style="margin-left: 30px">
-                            Price: ${{ bck_flight.price }}
+                            <span class="store-rebate store-rebate-price blk cb f-16 lh-20" style="margin-left: 30px">
+                                Price: ${{ bck_flight.price }}
                             </span>
                         </div>
                     </li>
@@ -107,8 +107,11 @@
                     <a href="#"
                        class="button secondary w-250"
                        title="Activate Cash Back at Macy's">
-                        Buy now
-                        <span class="arrow arr-right"></span>
+                        {% if bck_flight %}
+                            Buy for <b>${{ total_price }}</b>
+                        {% else %}
+                            Buy now
+                        {% endif %}
                     </a>
                 </li>
 

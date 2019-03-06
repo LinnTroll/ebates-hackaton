@@ -47,7 +47,8 @@
 }
 
 .cat-page .main .flights-list.buy-page .store-sort li.store .store-rebate.store-rebate-price {
-    width: 90px;
+    width: 110px;
+    margin-right: 10px;
 }
 
 .prodinfo-blk {

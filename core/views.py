@@ -144,7 +144,6 @@ class BuyPage(TemplateView):
             src_price = src_delivery['price__min']
             dst_price = dst_delivery['price__min']
             if src_price <= dst_price:
-                print('!!!', src_price, dst_price)
                 continue
 
             store_id = dst_delivery['store_id']
@@ -196,6 +195,7 @@ class BuyPage(TemplateView):
         if self.bck_flight:
             context_data['bck_flight']['company'] = self.get_company(self.bck_flight)
             context_data['bck_flight']['date'] = self.convert_time(self.bck_flight)
+        context_data['total_price'] = self.fwd_flight.get('price', 0) + self.bck_flight.get('price', 0)
         return context_data
 
 
